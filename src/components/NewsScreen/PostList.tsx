@@ -19,6 +19,13 @@ const PostList = observer(() => {
               <li key={post.id}>
                 <div>{post.title}</div>
                 <div>{post.body}</div>
+                <button
+                  onClick={() => {
+                    postStore.deletePost(post.id);
+                  }}
+                >
+                  Hide post
+                </button>
               </li>
             );
           })}

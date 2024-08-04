@@ -21,4 +21,10 @@ export class PostStore {
       this.isLoading = false;
     }
   };
+
+  deletePost = (id: number) => {
+    this.posts = this.posts.filter((post) => {
+      return post.id !== id;
+    });
+  };
 }
