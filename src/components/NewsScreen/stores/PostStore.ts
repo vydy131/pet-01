@@ -10,9 +10,15 @@ export class PostStore {
     makeAutoObservable(this);
   }
 
-  loadPosts = (apiURL: string) => {
-    axios.get(apiURL).then((incomingData) => {
+  loadPosts = async (apiURL: string) => {
+    this.isLoading = true;
+    try {
+      const incomingData = await axios.get(apiURL);
       this.posts = incomingData.data;
-    });
+    } catch (error) {
+      console.error("Failed to load posts", error);
+    } finally {
+      this.isLoading = false;
+    }
   };
 }

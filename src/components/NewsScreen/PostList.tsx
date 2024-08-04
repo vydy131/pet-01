@@ -7,10 +7,8 @@ const PostList = observer(() => {
   const { postStore } = NewsStore();
 
   useEffect(() => {
-    postStore.isLoading = true;
     postStore.loadPosts("https://jsonplaceholder.typicode.com/posts");
-    postStore.isLoading = false;
-  }, [postStore, postStore.isLoading]);
+  }, [postStore]);
 
   return (
     <div>
