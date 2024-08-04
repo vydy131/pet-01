@@ -17,7 +17,9 @@ const PostList = observer(() => {
           {postStore.posts.map((post) => {
             return (
               <li key={post.id}>
-                <div>{post.title}</div>
+                <div>
+                  {post.title} key={post.id}
+                </div>
                 <div>{post.body}</div>
                 <button
                   onClick={() => {

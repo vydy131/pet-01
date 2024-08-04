@@ -27,4 +27,28 @@ export class PostStore {
       return post.id !== id;
     });
   };
+
+  sortPosts = (selectedValue: string) => {
+    console.log(selectedValue);
+    switch (selectedValue) {
+      case "d-down":
+        this.posts.sort((a, b) => b.id - a.id);
+        break;
+      case "t-up":
+        this.posts.sort((a, b) =>
+          a.title.toLocaleLowerCase().localeCompare(b.title.toLocaleLowerCase())
+        );
+        break;
+      case "t-down":
+        this.posts.sort((a, b) =>
+          b.title.toLocaleLowerCase().localeCompare(a.title.toLocaleLowerCase())
+        );
+        break;
+
+      case "d-up":
+      default:
+        this.posts.sort((a, b) => a.id - b.id);
+        break;
+    }
+  };
 }
