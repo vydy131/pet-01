@@ -6,19 +6,29 @@ export class PostStore {
   posts: IPost[] = [];
   isLoading: boolean = false;
 
+  startPosition = 0;
+  quantityForFirstLoading = 10;
+  quantityForScrollLoading = 5;
+  isFirstLoading = true;
+
   constructor() {
     makeAutoObservable(this);
   }
 
-  loadPosts = async (apiURL: string) => {
-    this.isLoading = true;
+  loadNextPosts = async (apiURL: string) => {
     try {
-      const incomingData = await axios.get(apiURL);
-      this.posts = incomingData.data;
+      let offsetQuantity: number;
+      if (this.isFirstLoading) {
+        offsetQuantity = this.quantityForFirstLoading;
+      } else {
+        offsetQuantity = this.quantityForScrollLoading;
+      }
+      const incomingData = await axios.get(
+        apiURL + `?_start=${this.startPosition}&_limit=${offsetQuantity}`
+      );
+      this.posts = [...this.posts, ...incomingData.data];
     } catch (error) {
       console.error("Failed to load posts", error);
-    } finally {
-      this.isLoading = false;
     }
   };
 
