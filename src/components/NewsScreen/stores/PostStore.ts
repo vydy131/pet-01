@@ -5,6 +5,7 @@ import axios from "axios";
 export class PostStore {
   posts: IPost[] = [];
   authorsDataMap: { [key: number]: { username: string; email: string } } = {};
+
   private startPosition = 0;
   private quantityForFirstLoading = 20;
   private quantityForScrollLoading = 5;
@@ -35,11 +36,13 @@ export class PostStore {
     try {
       const incomingData = await axios.get(apiURL + `?id=${id}`);
       return {
+        // because we get the array of objects (here length === 1)
         username: incomingData.data[0].username,
         email: incomingData.data[0].email,
       };
     } catch (error) {
       console.error("Failed to load user name and email", error);
+      // this author will be shown in case of error
       return { username: "some guy", email: "maybe girl@fuck.off" };
     }
   }
