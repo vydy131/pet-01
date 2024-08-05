@@ -4,31 +4,47 @@ import axios from "axios";
 
 export class PostStore {
   posts: IPost[] = [];
-  isLoading: boolean = false;
 
   startPosition = 0;
-  quantityForFirstLoading = 10;
+  quantityForFirstLoading = 20;
   quantityForScrollLoading = 5;
-  isFirstLoading = true;
+  hasMore = true;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  loadNextPosts = async (apiURL: string) => {
+  initLoadingPosts = async (apiURL: string) => {
     try {
-      let offsetQuantity: number;
-      if (this.isFirstLoading) {
-        offsetQuantity = this.quantityForFirstLoading;
-      } else {
-        offsetQuantity = this.quantityForScrollLoading;
-      }
+      let offsetQuantity: number = this.quantityForFirstLoading;
       const incomingData = await axios.get(
         apiURL + `?_start=${this.startPosition}&_limit=${offsetQuantity}`
       );
       this.posts = [...this.posts, ...incomingData.data];
+      if (incomingData.data.length === 0) {
+        this.hasMore = false;
+      }
     } catch (error) {
       console.error("Failed to load posts", error);
+    } finally {
+      this.startPosition = this.posts.length;
+    }
+  };
+
+  loadNextPosts = async (apiURL: string) => {
+    try {
+      let offsetQuantity: number = this.quantityForScrollLoading;
+      const incomingData = await axios.get(
+        apiURL + `?_start=${this.startPosition}&_limit=${offsetQuantity}`
+      );
+      this.posts = [...this.posts, ...incomingData.data];
+      if (incomingData.data.length === 0) {
+        this.hasMore = false;
+      }
+    } catch (error) {
+      console.error("Failed to load posts", error);
+    } finally {
+      this.startPosition = this.posts.length;
     }
   };
 
