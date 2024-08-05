@@ -2,7 +2,7 @@ import { createContext, useContext } from "react";
 import { UserStore } from "./UserStore";
 
 export class GlobalRootStore {
-  postStore = new UserStore();
+  userStore = new UserStore();
 }
 
 export const GlobalRootStoreContext = createContext<GlobalRootStore | null>(

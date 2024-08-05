@@ -1,11 +1,18 @@
 import { NewsStore } from "./stores/NewsStoreProvider";
 import { observer } from "mobx-react-lite";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 
 const PostList = observer(() => {
   const { postStore } = NewsStore();
+  const { userStore } = GlobalStore();
+
   let isFirstRender = true;
+
+  const [userDetails, setUserDetails] = useState<{
+    [key: number]: { username: string; email: string };
+  }>({});
 
   useEffect(() => {
     if (isFirstRender) {
@@ -14,6 +21,27 @@ const PostList = observer(() => {
     }
     isFirstRender = false;
   }, [postStore]);
+
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      const userIds = postStore.posts.map((post) => post.userId);
+      const userDetailsMap: {
+        [key: number]: { username: string; email: string };
+      } = {};
+      for (const userId of userIds) {
+        if (!userDetails[userId]) {
+          const userDetails = await userStore.queryById(
+            "https://jsonplaceholder.typicode.com/users",
+            userId
+          );
+          userDetailsMap[userId] = userDetails;
+        }
+      }
+      setUserDetails(userDetailsMap);
+    };
+
+    fetchUserDetails();
+  }, [postStore.posts, userStore]);
 
   return (
     <div>
@@ -27,12 +55,16 @@ const PostList = observer(() => {
         endMessage={<h1>LOADING IS OVER</h1>}
       >
         {postStore.posts.map((post) => {
+          const user = userDetails[post.userId];
           return (
             <div key={post.id}>
               <div>
                 {post.title} key={post.id}
               </div>
               <div>{post.body}</div>
+              <address>
+                {user ? `${user.username} (${user.email})` : "Loading user..."}
+              </address>
               <button
                 onClick={() => {
                   postStore.deletePost(post.id);
