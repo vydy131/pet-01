@@ -5,16 +5,18 @@ import axios from "axios";
 export class PostStore {
   posts: IPost[] = [];
   authorsDataMap: { [key: number]: { username: string; email: string } } = {};
-  startPosition = 0;
-  quantityForFirstLoading = 20;
-  quantityForScrollLoading = 5;
+  private startPosition = 0;
+  private quantityForFirstLoading = 20;
+  private quantityForScrollLoading = 5;
   hasMore = true;
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  async queryById(id: number): Promise<{ username: string; email: string }> {
+  private async queryById(
+    id: number
+  ): Promise<{ username: string; email: string }> {
     if (this.authorsDataMap[id]) {
       return this.authorsDataMap[id];
     } else {
@@ -26,7 +28,7 @@ export class PostStore {
     }
   }
 
-  async getById(
+  private async getById(
     id: number,
     apiURL = "https://jsonplaceholder.typicode.com/users"
   ): Promise<{ username: string; email: string }> {
@@ -55,7 +57,7 @@ export class PostStore {
         if (incomingData.data.length === 0) {
           this.hasMore = false;
         }
-        this.loadAuthorsData(this.posts); // Загрузить данные авторов
+        this.loadAuthorsData(this.posts);
         this.startPosition = this.posts.length;
       });
     } catch (error) {
@@ -76,7 +78,7 @@ export class PostStore {
         if (incomingData.data.length === 0) {
           this.hasMore = false;
         }
-        this.loadAuthorsData(this.posts); // Загрузить данные авторов
+        this.loadAuthorsData(this.posts);
         this.startPosition = this.posts.length;
       });
     } catch (error) {

@@ -6,11 +6,11 @@ import { NewsStore } from "./stores/NewsStoreProvider";
 const PostList = observer(() => {
   const { postStore } = NewsStore();
 
+  // There is an unknown bug, so don't erase isFirstRender and others rows
+  // because in other way useEffect runs twice without offset's change
   let isFirstRender = true;
-
   useEffect(() => {
     if (isFirstRender) {
-      console.log("Initial load of posts...");
       postStore.initLoadingPosts();
     }
     isFirstRender = false;
