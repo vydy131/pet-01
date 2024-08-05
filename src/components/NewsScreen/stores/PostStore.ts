@@ -1,10 +1,10 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, runInAction } from "mobx";
 import { IPost } from "../../../interfaces/News-Post-Incoming";
 import axios from "axios";
 
 export class PostStore {
   posts: IPost[] = [];
-
+  authorsDataMap: { [key: number]: { username: string; email: string } } = {};
   startPosition = 0;
   quantityForFirstLoading = 20;
   quantityForScrollLoading = 5;
@@ -14,39 +14,84 @@ export class PostStore {
     makeAutoObservable(this);
   }
 
-  initLoadingPosts = async (apiURL: string) => {
+  async queryById(id: number): Promise<{ username: string; email: string }> {
+    if (this.authorsDataMap[id]) {
+      return this.authorsDataMap[id];
+    } else {
+      const incomingData = await this.getById(id);
+      runInAction(() => {
+        this.authorsDataMap[id] = incomingData;
+      });
+      return incomingData;
+    }
+  }
+
+  async getById(
+    id: number,
+    apiURL = "https://jsonplaceholder.typicode.com/users"
+  ): Promise<{ username: string; email: string }> {
+    try {
+      const incomingData = await axios.get(apiURL + `?id=${id}`);
+      return {
+        username: incomingData.data[0].username,
+        email: incomingData.data[0].email,
+      };
+    } catch (error) {
+      console.error("Failed to load user name and email", error);
+      return { username: "some guy", email: "maybe girl@fuck.off" };
+    }
+  }
+
+  async initLoadingPosts(
+    apiURL: string = "https://jsonplaceholder.typicode.com/posts"
+  ) {
     try {
       let offsetQuantity: number = this.quantityForFirstLoading;
       const incomingData = await axios.get(
         apiURL + `?_start=${this.startPosition}&_limit=${offsetQuantity}`
       );
-      this.posts = [...this.posts, ...incomingData.data];
-      if (incomingData.data.length === 0) {
-        this.hasMore = false;
-      }
+      runInAction(() => {
+        this.posts = [...this.posts, ...incomingData.data];
+        if (incomingData.data.length === 0) {
+          this.hasMore = false;
+        }
+        this.loadAuthorsData(this.posts); // Загрузить данные авторов
+        this.startPosition = this.posts.length;
+      });
     } catch (error) {
       console.error("Failed to load posts", error);
-    } finally {
-      this.startPosition = this.posts.length;
     }
-  };
+  }
 
-  loadNextPosts = async (apiURL: string) => {
+  async loadNextPosts(
+    apiURL: string = "https://jsonplaceholder.typicode.com/posts"
+  ) {
     try {
       let offsetQuantity: number = this.quantityForScrollLoading;
       const incomingData = await axios.get(
         apiURL + `?_start=${this.startPosition}&_limit=${offsetQuantity}`
       );
-      this.posts = [...this.posts, ...incomingData.data];
-      if (incomingData.data.length === 0) {
-        this.hasMore = false;
-      }
+      runInAction(() => {
+        this.posts = [...this.posts, ...incomingData.data];
+        if (incomingData.data.length === 0) {
+          this.hasMore = false;
+        }
+        this.loadAuthorsData(this.posts); // Загрузить данные авторов
+        this.startPosition = this.posts.length;
+      });
     } catch (error) {
       console.error("Failed to load posts", error);
-    } finally {
-      this.startPosition = this.posts.length;
     }
-  };
+  }
+
+  async loadAuthorsData(posts: IPost[]) {
+    const uniqueUserIds = Array.from(new Set(posts.map((post) => post.userId)));
+    for (const userId of uniqueUserIds) {
+      if (!this.authorsDataMap[userId]) {
+        await this.queryById(userId);
+      }
+    }
+  }
 
   deletePost = (id: number) => {
     this.posts = this.posts.filter((post) => {
