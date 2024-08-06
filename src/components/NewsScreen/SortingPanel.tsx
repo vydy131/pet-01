@@ -1,12 +1,13 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { NewsStore } from "./stores/NewsStoreProvider";
+import "../../styles/SortingPanel.css";
 
 const SortingPanel = observer(() => {
   const { postStore } = NewsStore();
 
   return (
-    <div>
+    <div className="sort-panel">
       <select
         name="sortPosts"
         id="sortPosts"

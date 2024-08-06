@@ -2,6 +2,7 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NewsStore } from "./stores/NewsStoreProvider";
+import "../../styles/PostList.css";
 
 const PostList = observer(() => {
   const { postStore } = NewsStore();
@@ -17,7 +18,7 @@ const PostList = observer(() => {
   }, [postStore]);
 
   return (
-    <div>
+    <div className="post-list">
       <InfiniteScroll
         dataLength={postStore.posts.length}
         next={() => postStore.loadNextPosts()}
@@ -28,19 +29,23 @@ const PostList = observer(() => {
         {postStore.posts.map((post) => {
           const author = postStore.authorsDataMap[post.userId];
           return (
-            <div key={post.id}>
-              <div>
+            <div key={post.id} className="post-item">
+              <div className="post-item-title">
                 {post.title} key={post.id}
               </div>
-              <div>{post.body}</div>
+              <div className="post-item-body">{post.body}</div>
               {author ? (
-                <address>
-                  {author.username} - {author.email}
+                <address className="post-item-author">
+                  {author.username}, write me:{" "}
+                  <span className="post-item-author-email">{author.email}</span>
                 </address>
               ) : (
-                <address>Loading...</address>
+                <address className="post-item-author-loading">
+                  Loading...
+                </address>
               )}
               <button
+                className="post-item-delete-button"
                 onClick={() => {
                   postStore.deletePost(post.id);
                 }}

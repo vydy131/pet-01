@@ -1,5 +1,5 @@
 import React from "react";
-import "./App.css";
+import "./styles/App.css";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import NewsScreen from "./components/NewsScreen/NewsScreen";
 import Header from "./components/Header/Header";
@@ -8,7 +8,7 @@ import {
   GlobalRootStore,
   GlobalRootStoreContext,
 } from "./globalStores/GlobalStoreProvider";
-import Footer from "./components/Footer.tsx/Footer";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
