@@ -7,8 +7,20 @@ enum AuthLevel {
   authorized,
 }
 
+export enum NavTabs {
+  News,
+  About,
+  Null,
+}
+
 export class UserStore {
+  currentTab: NavTabs = NavTabs.Null;
+
   constructor() {
     makeAutoObservable(this);
+  }
+
+  changeTab(newPosition: NavTabs) {
+    this.currentTab = newPosition;
   }
 }

@@ -4,8 +4,14 @@
 
 .nav-bar {}
 
-.nav-tab {}
+.nav-tab {
+    color: brown;
+}
 
-/* .nav-tab:active{} */
+.nav-tab-current {
+    color: green
+}
 
-.nav-tab:hover {}
+.nav-tab:hover {
+    color: chocolate
+}
