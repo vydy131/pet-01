@@ -8,6 +8,7 @@ import {
   GlobalRootStore,
   GlobalRootStoreContext,
 } from "./globalStores/GlobalStoreProvider";
+import Footer from "./components/Footer.tsx/Footer";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
             <Route path="/AboutScreen" Component={AboutScreen} />
             <Route path="*" element={<Navigate to="/NewsScreen" replace />} />
           </Routes>
+          <Footer />
         </BrowserRouter>
       </GlobalRootStoreContext.Provider>
     </div>
