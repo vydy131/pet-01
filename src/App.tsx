@@ -16,11 +16,13 @@ function App() {
       <GlobalRootStoreContext.Provider value={new GlobalRootStore()}>
         <BrowserRouter>
           <Header />
-          <Routes>
-            <Route path="/NewsScreen" Component={NewsScreen} />
-            <Route path="/AboutScreen" Component={AboutScreen} />
-            <Route path="*" element={<Navigate to="/NewsScreen" replace />} />
-          </Routes>
+          <div className="content">
+            <Routes>
+              <Route path="/NewsScreen" Component={NewsScreen} />
+              <Route path="/AboutScreen" Component={AboutScreen} />
+              <Route path="*" element={<Navigate to="/NewsScreen" replace />} />
+            </Routes>
+          </div>
           <Footer />
         </BrowserRouter>
       </GlobalRootStoreContext.Provider>

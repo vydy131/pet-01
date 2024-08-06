@@ -1,1 +1,14 @@
-.App {}
+.App {
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+* {
+    /* I use this line with 2px for changing markup */
+    /* border: 2px solid green; */
+}
+
+.content {
+    min-height: 100vh;
+}

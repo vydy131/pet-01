@@ -6,6 +6,8 @@ export class PostStore {
   posts: IPost[] = [];
   authorsDataMap: { [key: number]: { username: string; email: string } } = {};
 
+  currentSortingValue: string = "d-up";
+
   private startPosition = 0;
   private quantityForFirstLoading = 20;
   private quantityForScrollLoading = 5;
@@ -109,21 +111,25 @@ export class PostStore {
     switch (selectedValue) {
       case "d-down":
         this.posts.sort((a, b) => b.id - a.id);
+        this.currentSortingValue = selectedValue;
         break;
       case "t-up":
         this.posts.sort((a, b) =>
           a.title.toLocaleLowerCase().localeCompare(b.title.toLocaleLowerCase())
         );
+        this.currentSortingValue = selectedValue;
         break;
       case "t-down":
         this.posts.sort((a, b) =>
           b.title.toLocaleLowerCase().localeCompare(a.title.toLocaleLowerCase())
         );
+        this.currentSortingValue = selectedValue;
         break;
 
       case "d-up":
       default:
         this.posts.sort((a, b) => a.id - b.id);
+        this.currentSortingValue = selectedValue;
         break;
     }
   };

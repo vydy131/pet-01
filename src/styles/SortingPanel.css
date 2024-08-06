@@ -1,1 +1,5 @@
-.sort-panel {}
+.sort-panel {
+    margin-top: 8px;
+    margin-left: 8px;
+    /* font-size: 1.3rem; */
+}

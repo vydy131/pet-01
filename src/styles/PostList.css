@@ -1,12 +1,36 @@
-.post-list {}
+.post-list {
+    margin: 8px;
+    margin-top: 0px;
+}
 
-.post-item {}
+.post-item {
+    margin: 8px;
+    border: 1px solid grey;
+}
 
-.post-item-title {}
+.post-item-header {
+    display: flex;
+    justify-content: space-between;
+}
 
-.post-item-body {}
+.post-item-title {
+    font-size: 2.3rem;
+    font-weight: 500;
+}
 
-.post-item-author {}
+.post-item-body {
+    font-size: 1.5rem;
+}
+
+.post-item-title::first-letter,
+.post-item-body::first-letter {
+    text-transform: capitalize;
+}
+
+.post-item-author {
+    text-align: right;
+    font-size: 1.3rem;
+}
 
 .post-item-author-email {}
 

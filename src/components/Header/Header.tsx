@@ -9,14 +9,17 @@ const Header = observer(() => {
   const { userStore } = GlobalStore();
   return (
     <div className="header">
-      <section className="welcome-line">Welcome to my website!</section>
+      <div className="high-bar">
+        <div className="welcome-line">Welcome to my website!</div>
+        <div className="profile-button">Log in</div>
+      </div>
       <nav className="nav-bar">
         <Link
           to="/NewsScreen"
           className={
             userStore.currentTab === NavTabs.News
               ? "nav-tab nav-tab-current"
-              : "nab-tab"
+              : "nav-tab"
           }
         >
           News
@@ -26,7 +29,7 @@ const Header = observer(() => {
           className={
             userStore.currentTab === NavTabs.About
               ? "nav-tab nav-tab-current"
-              : "nab-tab"
+              : "nav-tab"
           }
         >
           About

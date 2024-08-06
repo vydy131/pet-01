@@ -30,13 +30,23 @@ const PostList = observer(() => {
           const author = postStore.authorsDataMap[post.userId];
           return (
             <div key={post.id} className="post-item">
-              <div className="post-item-title">
-                {post.title} key={post.id}
+              <div className="post-item-header">
+                <div className="post-item-title">
+                  {post.title} key={post.id}
+                </div>
+                <button
+                  className="post-item-delete-button"
+                  onClick={() => {
+                    postStore.deletePost(post.id);
+                  }}
+                >
+                  Hide post
+                </button>
               </div>
               <div className="post-item-body">{post.body}</div>
               {author ? (
                 <address className="post-item-author">
-                  {author.username}, write me:{" "}
+                  from {author.username} <br />
                   <span className="post-item-author-email">{author.email}</span>
                 </address>
               ) : (
@@ -44,14 +54,6 @@ const PostList = observer(() => {
                   Loading...
                 </address>
               )}
-              <button
-                className="post-item-delete-button"
-                onClick={() => {
-                  postStore.deletePost(post.id);
-                }}
-              >
-                Hide post
-              </button>
             </div>
           );
         })}
