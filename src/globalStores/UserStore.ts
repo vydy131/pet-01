@@ -13,8 +13,16 @@ export enum NavTabs {
   Null,
 }
 
+export enum ModalDialogs {
+  Login,
+  CreatingPost,
+  ChangingPost,
+  Null,
+}
+
 export class UserStore {
   currentTab: NavTabs = NavTabs.Null;
+  currentModalDialog: ModalDialogs = ModalDialogs.Null;
 
   constructor() {
     makeAutoObservable(this);
@@ -22,5 +30,9 @@ export class UserStore {
 
   changeTab(newPosition: NavTabs) {
     this.currentTab = newPosition;
+  }
+
+  changeModalDialog(newPosition: ModalDialogs) {
+    this.currentModalDialog = newPosition;
   }
 }

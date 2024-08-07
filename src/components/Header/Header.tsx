@@ -2,8 +2,10 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../../styles/Header.css";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
-import { NavTabs } from "../../globalStores/UserStore";
+import { ModalDialogs, NavTabs } from "../../globalStores/UserStore";
 import { observer } from "mobx-react-lite";
+import LoginModalDialog from "./LoginModalForm";
+import ModalDialog from "../UI/ModalDialog";
 
 const Header = observer(() => {
   const { userStore } = GlobalStore();
@@ -11,7 +13,20 @@ const Header = observer(() => {
     <div className="header">
       <div className="high-bar">
         <div className="welcome-line">Welcome to my website!</div>
-        <div className="profile-button">Log in</div>
+        <div className="profile-button">
+          <button
+            onClick={() => {
+              userStore.changeModalDialog(ModalDialogs.Login);
+            }}
+          >
+            Log in
+          </button>
+        </div>
+        {userStore.currentModalDialog === ModalDialogs.Login ? (
+          <ModalDialog>
+            <LoginModalDialog />
+          </ModalDialog>
+        ) : null}
       </div>
       <nav className="nav-bar">
         <Link
