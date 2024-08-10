@@ -9,27 +9,6 @@ const SortingPanel = observer(() => {
   const { userStore } = GlobalStore();
   const { postStore } = NewsStore();
 
-  // return (
-  //   <div className="sort-panel">
-  //     <select
-  //       name="sortPosts"
-  //       id="sortPosts"
-  //       onChange={(e) => {
-  //         postStore.sortPosts(e.target.value);
-  //       }}
-  //     >
-  //       <optgroup label="Date">
-  //         <option value="d-up">Up</option>
-  //         <option value="d-down">Down</option>
-  //       </optgroup>
-  //       <optgroup label="Title">
-  //         <option value="t-up">Up</option>
-  //         <option value="t-down">Down</option>
-  //       </optgroup>
-  //     </select>
-  //   </div>
-  // );
-
   return (
     <div className="sort-panel">
       {userStore.currentAuthLevel === AuthLevel.authorized ? (

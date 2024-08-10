@@ -11,9 +11,12 @@ export class PostStore {
   currentFilterValue: string = "all-posts";
 
   private startPosition = 0;
+  private startPositionMP = 0;
   private quantityForFirstLoading = 20;
   private quantityForScrollLoading = 5;
   hasMore = true;
+  isFirstRender = true;
+  isFirstRenderMP = true;
 
   constructor() {
     makeAutoObservable(this);
@@ -52,7 +55,8 @@ export class PostStore {
   }
 
   async initLoadingPosts(
-    apiURL: string = "https://jsonplaceholder.typicode.com/posts?"
+    apiURL: string = "https://jsonplaceholder.typicode.com/posts?",
+    withMyPostsFlag = false
   ) {
     try {
       let offsetQuantity: number = this.quantityForFirstLoading;
@@ -65,7 +69,11 @@ export class PostStore {
           this.hasMore = false;
         }
         this.loadAuthorsData(this.posts);
-        this.startPosition = this.posts.length;
+        if (withMyPostsFlag) {
+          this.startPositionMP = this.posts.length;
+        } else {
+          this.startPosition = this.posts.length;
+        }
       });
     } catch (error) {
       console.error("Failed to load posts", error);
@@ -73,7 +81,8 @@ export class PostStore {
   }
 
   async loadNextPosts(
-    apiURL: string = "https://jsonplaceholder.typicode.com/posts?"
+    apiURL: string = "https://jsonplaceholder.typicode.com/posts?",
+    withMyPostsFlag = false
   ) {
     try {
       let offsetQuantity: number = this.quantityForScrollLoading;
@@ -86,7 +95,11 @@ export class PostStore {
           this.hasMore = false;
         }
         this.loadAuthorsData(this.posts);
-        this.startPosition = this.posts.length;
+        if (withMyPostsFlag) {
+          this.startPositionMP = this.posts.length;
+        } else {
+          this.startPosition = this.posts.length;
+        }
       });
     } catch (error) {
       console.error("Failed to load posts", error);
@@ -112,14 +125,22 @@ export class PostStore {
     console.log(selectedValue);
     switch (selectedValue) {
       case "my-posts":
-        [this.posts, this.cashedPosts] = [this.cashedPosts, this.posts];
-        this.currentFilterValue = selectedValue;
+        runInAction(() => {
+          this.startPosition = this.cashedPosts.length;
+          this.startPositionMP = this.posts.length;
+          [this.posts, this.cashedPosts] = [this.cashedPosts, this.posts];
+          this.currentFilterValue = selectedValue;
+        });
         break;
 
       case "all-posts":
       default:
-        [this.posts, this.cashedPosts] = [this.cashedPosts, this.posts];
-        this.currentFilterValue = selectedValue;
+        runInAction(() => {
+          this.startPosition = this.posts.length;
+          this.startPositionMP = this.cashedPosts.length;
+          [this.posts, this.cashedPosts] = [this.cashedPosts, this.posts];
+          this.currentFilterValue = selectedValue;
+        });
     }
   };
 

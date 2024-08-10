@@ -9,16 +9,27 @@ const PostList = observer(() => {
   const { postStore } = NewsStore();
   const { userStore } = GlobalStore();
 
-  // There is an unknown bug, so don't erase isFirstRender and others rows
-  // because in other way useEffect runs twice without offset's change
-  let isFirstRender = true;
   useEffect(() => {
     console.log("hi from use effect");
 
-    if (isFirstRender) {
-      postStore.initLoadingPosts();
+    if (
+      postStore.isFirstRenderMP &&
+      postStore.currentFilterValue === "my-posts" &&
+      userStore.currentUser
+    ) {
+      postStore.initLoadingPosts(
+        `https://jsonplaceholder.typicode.com/posts?userId=${userStore.currentUser.id}&`,
+        true
+      );
+      console.log("hi from init load MP");
+      postStore.isFirstRenderMP = false;
     }
-    isFirstRender = false;
+
+    if (postStore.isFirstRender) {
+      postStore.initLoadingPosts();
+      console.log("hi from init load");
+    }
+    postStore.isFirstRender = false;
   }, [postStore, postStore.currentFilterValue]);
 
   return (
@@ -31,7 +42,8 @@ const PostList = observer(() => {
             userStore.currentUser
           ) {
             return postStore.loadNextPosts(
-              `https://jsonplaceholder.typicode.com/posts?userId=${userStore.currentUser.id}`
+              `https://jsonplaceholder.typicode.com/posts?userId=${userStore.currentUser.id}&`,
+              true
             );
           } else {
             return postStore.loadNextPosts();
