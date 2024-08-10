@@ -4,7 +4,7 @@ import axios from "axios";
 
 export class PostStore {
   posts: IPost[] = [];
-  cashedPosts: IPost[] = [];
+  myPosts: IPost[] = [];
   authorsDataMap: { [key: number]: { username: string; email: string } } = {};
 
   currentSortingValue: string = "d-up";
@@ -15,6 +15,7 @@ export class PostStore {
   private quantityForFirstLoading = 20;
   private quantityForScrollLoading = 5;
   hasMore = true;
+  hasMoreMP = true;
   isFirstRender = true;
   isFirstRenderMP = true;
 
@@ -61,18 +62,25 @@ export class PostStore {
     try {
       let offsetQuantity: number = this.quantityForFirstLoading;
       const incomingData = await axios.get(
-        apiURL + `_start=${this.startPosition}&_limit=${offsetQuantity}`
+        withMyPostsFlag
+          ? apiURL + `_start=${this.startPositionMP}&_limit=${offsetQuantity}`
+          : apiURL + `_start=${this.startPosition}&_limit=${offsetQuantity}`
       );
       runInAction(() => {
-        this.posts = [...this.posts, ...incomingData.data];
-        if (incomingData.data.length === 0) {
-          this.hasMore = false;
-        }
-        this.loadAuthorsData(this.posts);
-        if (withMyPostsFlag) {
-          this.startPositionMP = this.posts.length;
-        } else {
+        if (!withMyPostsFlag) {
+          this.posts = [...this.posts, ...incomingData.data];
+          if (incomingData.data.length === 0) {
+            this.hasMore = false;
+          }
+          this.loadAuthorsData(this.posts);
           this.startPosition = this.posts.length;
+        } else {
+          this.myPosts = [...this.myPosts, ...incomingData.data];
+          if (incomingData.data.length === 0) {
+            this.hasMoreMP = false;
+          }
+          this.loadAuthorsData(this.myPosts);
+          this.startPositionMP = this.myPosts.length;
         }
       });
     } catch (error) {
@@ -87,18 +95,25 @@ export class PostStore {
     try {
       let offsetQuantity: number = this.quantityForScrollLoading;
       const incomingData = await axios.get(
-        apiURL + `_start=${this.startPosition}&_limit=${offsetQuantity}`
+        withMyPostsFlag
+          ? apiURL + `_start=${this.startPositionMP}&_limit=${offsetQuantity}`
+          : apiURL + `_start=${this.startPosition}&_limit=${offsetQuantity}`
       );
       runInAction(() => {
-        this.posts = [...this.posts, ...incomingData.data];
-        if (incomingData.data.length === 0) {
-          this.hasMore = false;
-        }
-        this.loadAuthorsData(this.posts);
-        if (withMyPostsFlag) {
-          this.startPositionMP = this.posts.length;
-        } else {
+        if (!withMyPostsFlag) {
+          this.posts = [...this.posts, ...incomingData.data];
+          if (incomingData.data.length === 0) {
+            this.hasMore = false;
+          }
+          this.loadAuthorsData(this.posts);
           this.startPosition = this.posts.length;
+        } else {
+          this.myPosts = [...this.myPosts, ...incomingData.data];
+          if (incomingData.data.length === 0) {
+            this.hasMoreMP = false;
+          }
+          this.loadAuthorsData(this.myPosts);
+          this.startPositionMP = this.myPosts.length;
         }
       });
     } catch (error) {
@@ -122,26 +137,7 @@ export class PostStore {
   };
 
   filterPosts = (selectedValue: string) => {
-    console.log(selectedValue);
-    switch (selectedValue) {
-      case "my-posts":
-        runInAction(() => {
-          this.startPosition = this.cashedPosts.length;
-          this.startPositionMP = this.posts.length;
-          [this.posts, this.cashedPosts] = [this.cashedPosts, this.posts];
-          this.currentFilterValue = selectedValue;
-        });
-        break;
-
-      case "all-posts":
-      default:
-        runInAction(() => {
-          this.startPosition = this.posts.length;
-          this.startPositionMP = this.cashedPosts.length;
-          [this.posts, this.cashedPosts] = [this.cashedPosts, this.posts];
-          this.currentFilterValue = selectedValue;
-        });
-    }
+    this.currentFilterValue = selectedValue;
   };
 
   sortPosts = (selectedValue: string) => {

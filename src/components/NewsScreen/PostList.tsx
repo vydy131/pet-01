@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NewsStore } from "./stores/NewsStoreProvider";
 import "../../styles/PostList.css";
+import PostItem from "./PostItem";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 
 const PostList = observer(() => {
@@ -10,81 +11,60 @@ const PostList = observer(() => {
   const { userStore } = GlobalStore();
 
   useEffect(() => {
-    console.log("hi from use effect");
-
-    if (
-      postStore.isFirstRenderMP &&
-      postStore.currentFilterValue === "my-posts" &&
-      userStore.currentUser
-    ) {
-      postStore.initLoadingPosts(
-        `https://jsonplaceholder.typicode.com/posts?userId=${userStore.currentUser.id}&`,
-        true
-      );
-      console.log("hi from init load MP");
-      postStore.isFirstRenderMP = false;
-    }
-
     if (postStore.isFirstRender) {
       postStore.initLoadingPosts();
-      console.log("hi from init load");
     }
     postStore.isFirstRender = false;
+  }, [postStore]);
+
+  useEffect(() => {
+    if (postStore.currentFilterValue === "my-posts" && userStore.currentUser) {
+      if (postStore.isFirstRenderMP) {
+        postStore.initLoadingPosts(
+          `https://jsonplaceholder.typicode.com/posts?userId=${userStore.currentUser.id}&`,
+          true
+        );
+      }
+      postStore.isFirstRenderMP = false;
+    }
   }, [postStore, postStore.currentFilterValue]);
 
   return (
     <div className="post-list">
-      <InfiniteScroll
-        dataLength={postStore.posts.length}
-        next={() => {
-          if (
-            postStore.currentFilterValue === "my-posts" &&
-            userStore.currentUser
-          ) {
+      {postStore.currentFilterValue === "my-posts" && userStore.currentUser ? (
+        <InfiniteScroll
+          dataLength={postStore.myPosts.length}
+          next={() => {
             return postStore.loadNextPosts(
-              `https://jsonplaceholder.typicode.com/posts?userId=${userStore.currentUser.id}&`,
+              `https://jsonplaceholder.typicode.com/posts?userId=${
+                userStore.currentUser!.id
+              }&`,
               true
             );
-          } else {
+          }}
+          hasMore={postStore.hasMoreMP}
+          loader={<h1>LOADING BY INF SCR</h1>}
+          endMessage={<h1>LOADING IS OVER</h1>}
+        >
+          {postStore.myPosts.map((post) => (
+            <PostItem key={post.id} {...post} />
+          ))}
+        </InfiniteScroll>
+      ) : (
+        <InfiniteScroll
+          dataLength={postStore.posts.length}
+          next={() => {
             return postStore.loadNextPosts();
-          }
-        }}
-        hasMore={postStore.hasMore}
-        loader={<h1>LOADING BY INF SCR</h1>}
-        endMessage={<h1>LOADING IS OVER</h1>}
-      >
-        {postStore.posts.map((post) => {
-          const author = postStore.authorsDataMap[post.userId];
-          return (
-            <div key={post.id} className="post-item">
-              <div className="post-item-header">
-                <div className="post-item-title">
-                  {post.title} key={post.id}
-                </div>
-                <button
-                  className="post-item-delete-button"
-                  onClick={() => {
-                    postStore.deletePost(post.id);
-                  }}
-                >
-                  Hide post
-                </button>
-              </div>
-              <div className="post-item-body">{post.body}</div>
-              {author ? (
-                <address className="post-item-author">
-                  from {author.username} <br />
-                  <span className="post-item-author-email">{author.email}</span>
-                </address>
-              ) : (
-                <address className="post-item-author-loading">
-                  Loading...
-                </address>
-              )}
-            </div>
-          );
-        })}
-      </InfiniteScroll>
+          }}
+          hasMore={postStore.hasMore}
+          loader={<h1>LOADING BY INF SCR</h1>}
+          endMessage={<h1>LOADING IS OVER</h1>}
+        >
+          {postStore.posts.map((post) => (
+            <PostItem key={post.id} {...post} />
+          ))}
+        </InfiniteScroll>
+      )}
     </div>
   );
 });

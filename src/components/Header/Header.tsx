@@ -30,7 +30,9 @@ const Header = observer(() => {
               }
             }}
           >
-            My profile
+            {userStore.currentAuthLevel === AuthLevel.authorized
+              ? "My profile"
+              : "Log in"}
           </button>
         </div>
         {userStore.currentModalDialog === ModalDialogs.Login ? (
