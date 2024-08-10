@@ -3,25 +3,40 @@ import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NewsStore } from "./stores/NewsStoreProvider";
 import "../../styles/PostList.css";
+import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 
 const PostList = observer(() => {
   const { postStore } = NewsStore();
+  const { userStore } = GlobalStore();
 
   // There is an unknown bug, so don't erase isFirstRender and others rows
   // because in other way useEffect runs twice without offset's change
   let isFirstRender = true;
   useEffect(() => {
+    console.log("hi from use effect");
+
     if (isFirstRender) {
       postStore.initLoadingPosts();
     }
     isFirstRender = false;
-  }, [postStore]);
+  }, [postStore, postStore.currentFilterValue]);
 
   return (
     <div className="post-list">
       <InfiniteScroll
         dataLength={postStore.posts.length}
-        next={() => postStore.loadNextPosts()}
+        next={() => {
+          if (
+            postStore.currentFilterValue === "my-posts" &&
+            userStore.currentUser
+          ) {
+            return postStore.loadNextPosts(
+              `https://jsonplaceholder.typicode.com/posts?userId=${userStore.currentUser.id}`
+            );
+          } else {
+            return postStore.loadNextPosts();
+          }
+        }}
         hasMore={postStore.hasMore}
         loader={<h1>LOADING BY INF SCR</h1>}
         endMessage={<h1>LOADING IS OVER</h1>}

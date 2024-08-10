@@ -2,8 +2,11 @@ import { observer } from "mobx-react-lite";
 import React from "react";
 import { NewsStore } from "./stores/NewsStoreProvider";
 import "../../styles/SortingPanel.css";
+import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
+import { AuthLevel } from "../../globalStores/UserStore";
 
 const SortingPanel = observer(() => {
+  const { userStore } = GlobalStore();
   const { postStore } = NewsStore();
 
   // return (
@@ -29,6 +32,35 @@ const SortingPanel = observer(() => {
 
   return (
     <div className="sort-panel">
+      {userStore.currentAuthLevel === AuthLevel.authorized ? (
+        <form>
+          <fieldset>
+            <legend>Show me...</legend>
+            <input
+              type="radio"
+              id="my-posts"
+              value="my-posts"
+              name="filter"
+              checked={postStore.currentFilterValue === "my-posts"}
+              onChange={(e) => {
+                postStore.filterPosts(e.target.value);
+              }}
+            />
+            <label htmlFor="my-posts">My posts</label>
+            <input
+              type="radio"
+              id="all-posts"
+              value="all-posts"
+              name="filter"
+              checked={postStore.currentFilterValue === "all-posts"}
+              onChange={(e) => {
+                postStore.filterPosts(e.target.value);
+              }}
+            />
+            <label htmlFor="all-posts">All posts</label>
+          </fieldset>
+        </form>
+      ) : null}
       <form>
         <fieldset>
           <legend>Sort by</legend>

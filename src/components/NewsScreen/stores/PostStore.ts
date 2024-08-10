@@ -4,9 +4,11 @@ import axios from "axios";
 
 export class PostStore {
   posts: IPost[] = [];
+  cashedPosts: IPost[] = [];
   authorsDataMap: { [key: number]: { username: string; email: string } } = {};
 
   currentSortingValue: string = "d-up";
+  currentFilterValue: string = "all-posts";
 
   private startPosition = 0;
   private quantityForFirstLoading = 20;
@@ -45,17 +47,17 @@ export class PostStore {
     } catch (error) {
       console.error("Failed to load user name and email", error);
       // this author will be shown in case of error
-      return { username: "some guy", email: "maybe girl@fuck.off" };
+      return { username: "some guy", email: "maybe girl" };
     }
   }
 
   async initLoadingPosts(
-    apiURL: string = "https://jsonplaceholder.typicode.com/posts"
+    apiURL: string = "https://jsonplaceholder.typicode.com/posts?"
   ) {
     try {
       let offsetQuantity: number = this.quantityForFirstLoading;
       const incomingData = await axios.get(
-        apiURL + `?_start=${this.startPosition}&_limit=${offsetQuantity}`
+        apiURL + `_start=${this.startPosition}&_limit=${offsetQuantity}`
       );
       runInAction(() => {
         this.posts = [...this.posts, ...incomingData.data];
@@ -71,12 +73,12 @@ export class PostStore {
   }
 
   async loadNextPosts(
-    apiURL: string = "https://jsonplaceholder.typicode.com/posts"
+    apiURL: string = "https://jsonplaceholder.typicode.com/posts?"
   ) {
     try {
       let offsetQuantity: number = this.quantityForScrollLoading;
       const incomingData = await axios.get(
-        apiURL + `?_start=${this.startPosition}&_limit=${offsetQuantity}`
+        apiURL + `_start=${this.startPosition}&_limit=${offsetQuantity}`
       );
       runInAction(() => {
         this.posts = [...this.posts, ...incomingData.data];
@@ -104,6 +106,21 @@ export class PostStore {
     this.posts = this.posts.filter((post) => {
       return post.id !== id;
     });
+  };
+
+  filterPosts = (selectedValue: string) => {
+    console.log(selectedValue);
+    switch (selectedValue) {
+      case "my-posts":
+        [this.posts, this.cashedPosts] = [this.cashedPosts, this.posts];
+        this.currentFilterValue = selectedValue;
+        break;
+
+      case "all-posts":
+      default:
+        [this.posts, this.cashedPosts] = [this.cashedPosts, this.posts];
+        this.currentFilterValue = selectedValue;
+    }
   };
 
   sortPosts = (selectedValue: string) => {
