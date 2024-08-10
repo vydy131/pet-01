@@ -2,10 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import "../../styles/Header.css";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
-import { ModalDialogs, NavTabs } from "../../globalStores/UserStore";
+import { AuthLevel, ModalDialogs, NavTabs } from "../../globalStores/UserStore";
 import { observer } from "mobx-react-lite";
 import LoginModalDialog from "./LoginModalForm";
 import ModalDialog from "../UI/ModalDialog";
+import ProfileModalDialog from "./ProfileModalDialog";
 
 const Header = observer(() => {
   const { userStore } = GlobalStore();
@@ -22,15 +23,24 @@ const Header = observer(() => {
         <div className="profile-button">
           <button
             onClick={() => {
-              userStore.changeModalDialog(ModalDialogs.Login);
+              if (userStore.currentAuthLevel === AuthLevel.unauthorized) {
+                userStore.changeModalDialog(ModalDialogs.Login);
+              } else {
+                userStore.changeModalDialog(ModalDialogs.Profile);
+              }
             }}
           >
-            Log in
+            My profile
           </button>
         </div>
         {userStore.currentModalDialog === ModalDialogs.Login ? (
           <ModalDialog touchBackground={handleBackgroundClick}>
             <LoginModalDialog />
+          </ModalDialog>
+        ) : null}
+        {userStore.currentModalDialog === ModalDialogs.Profile ? (
+          <ModalDialog touchBackground={handleBackgroundClick}>
+            <ProfileModalDialog />
           </ModalDialog>
         ) : null}
       </div>

@@ -16,20 +16,31 @@ const LoginModalForm = observer(() => {
               value={userStore.authUsername}
               onChange={userStore.handleUsernameInput}
               type="text"
+              name="username"
             />
           </label>
           <label>
             Email
             <input
-              value={userStore.authEmail}
-              onChange={userStore.handleEmailInput}
-              type="email"
+              value={userStore.authName}
+              onChange={userStore.handleNameInput}
+              type="name"
+              name="name"
             />
           </label>
+          <button onClick={userStore.handlePreparedData}>
+            Continue with prepared data
+          </button>
         </fieldset>
         <button type="submit">Log in</button>
-        <button onClick={userStore.handlePreparedData}>
-          Continue with prepared data
+
+        <hr />
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+          }}
+        >
+          Sign up
         </button>
       </form>
     </div>
