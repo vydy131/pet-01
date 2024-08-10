@@ -9,6 +9,12 @@ import ModalDialog from "../UI/ModalDialog";
 
 const Header = observer(() => {
   const { userStore } = GlobalStore();
+
+  const handleBackgroundClick = (e: MouseEvent) => {
+    userStore.changeModalDialog(ModalDialogs.Null);
+    e.stopPropagation();
+  };
+
   return (
     <div className="header">
       <div className="high-bar">
@@ -23,7 +29,7 @@ const Header = observer(() => {
           </button>
         </div>
         {userStore.currentModalDialog === ModalDialogs.Login ? (
-          <ModalDialog>
+          <ModalDialog touchBackground={handleBackgroundClick}>
             <LoginModalDialog />
           </ModalDialog>
         ) : null}
