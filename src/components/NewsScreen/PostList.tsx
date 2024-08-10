@@ -5,6 +5,7 @@ import { NewsStore } from "./stores/NewsStoreProvider";
 import "../../styles/PostList.css";
 import PostItem from "./PostItem";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
+import CreatePostForm from "./CreatePostForm";
 
 const PostList = observer(() => {
   const { postStore } = NewsStore();
@@ -31,26 +32,28 @@ const PostList = observer(() => {
 
   return (
     <div className="post-list">
-      <button className="create-post-btn">Create post!</button>
       {postStore.currentFilterValue === "my-posts" && userStore.currentUser ? (
-        <InfiniteScroll
-          dataLength={postStore.myPosts.length}
-          next={() => {
-            return postStore.loadNextPosts(
-              `https://jsonplaceholder.typicode.com/posts?userId=${
-                userStore.currentUser!.id
-              }&`,
-              true
-            );
-          }}
-          hasMore={postStore.hasMoreMP}
-          loader={<h1>LOADING BY INF SCR</h1>}
-          endMessage={<h1>LOADING IS OVER</h1>}
-        >
-          {postStore.myPosts.map((post) => (
-            <PostItem key={post.id} {...post} />
-          ))}
-        </InfiniteScroll>
+        <>
+          <CreatePostForm />
+          <InfiniteScroll
+            dataLength={postStore.myPosts.length}
+            next={() => {
+              return postStore.loadNextPosts(
+                `https://jsonplaceholder.typicode.com/posts?userId=${
+                  userStore.currentUser!.id
+                }&`,
+                true
+              );
+            }}
+            hasMore={postStore.hasMoreMP}
+            loader={<h1>LOADING BY INF SCR</h1>}
+            endMessage={<h1>LOADING IS OVER</h1>}
+          >
+            {postStore.myPosts.map((post) => (
+              <PostItem key={post.id} {...post} />
+            ))}
+          </InfiniteScroll>
+        </>
       ) : (
         <InfiniteScroll
           dataLength={postStore.posts.length}
