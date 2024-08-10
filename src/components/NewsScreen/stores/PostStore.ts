@@ -125,9 +125,16 @@ export class PostStore {
     const uniqueUserIds = Array.from(new Set(posts.map((post) => post.userId)));
     for (const userId of uniqueUserIds) {
       if (!this.authorsDataMap[userId]) {
-        await this.queryById(userId);
+        const authorData = await this.queryById(userId);
+        runInAction(() => {
+          this.authorsDataMap[userId] = authorData;
+        });
       }
     }
+    runInAction(() => {
+      this.posts = [...this.posts]; // Для общего списка постов
+      this.myPosts = [...this.myPosts]; // Для моих постов
+    });
   }
 
   deletePost = (id: number) => {

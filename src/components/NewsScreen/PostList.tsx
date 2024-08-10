@@ -31,6 +31,7 @@ const PostList = observer(() => {
 
   return (
     <div className="post-list">
+      <button className="create-post-btn">Create post!</button>
       {postStore.currentFilterValue === "my-posts" && userStore.currentUser ? (
         <InfiniteScroll
           dataLength={postStore.myPosts.length}
