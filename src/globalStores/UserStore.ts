@@ -1,5 +1,5 @@
-import axios from "axios";
 import { makeAutoObservable } from "mobx";
+import { ChangeEvent } from "react";
 import { IUser } from "../interfaces/User-Profile-Incoming";
 
 enum AuthLevel {
@@ -21,8 +21,13 @@ export enum ModalDialogs {
 }
 
 export class UserStore {
+  currentUser: IUser | null = null;
   currentTab: NavTabs = NavTabs.Null;
   currentModalDialog: ModalDialogs = ModalDialogs.Null;
+  currentAuthLevel: AuthLevel = AuthLevel.unauthorized;
+
+  authUsername: string = "";
+  authEmail: string = "";
 
   constructor() {
     makeAutoObservable(this);
@@ -35,4 +40,23 @@ export class UserStore {
   changeModalDialog(newPosition: ModalDialogs) {
     this.currentModalDialog = newPosition;
   }
+
+  handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.authUsername = e.target.value;
+  };
+
+  handleEmailInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.authEmail = e.target.value;
+  };
+
+  handlePreparedData = (e: React.MouseEvent<HTMLButtonElement>) => {
+    this.authUsername = "Samantha";
+    this.authEmail = "Nathan@yesenia.net";
+    e.preventDefault();
+  };
+
+  handleSubmitLoginForm = (e: any) => {
+    e.preventDefault();
+    console.log(e);
+  };
 }
