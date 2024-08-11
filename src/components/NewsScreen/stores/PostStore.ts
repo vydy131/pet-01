@@ -1,6 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { IPost } from "../../../interfaces/News-Post-Incoming";
 import axios from "axios";
+import { log } from "console";
+import { ChangeEvent } from "react";
 
 export class PostStore {
   posts: IPost[] = [];
@@ -18,6 +20,10 @@ export class PostStore {
   hasMoreMP = true;
   isFirstRender = true;
   isFirstRenderMP = true;
+
+  showCreatePostWarning = false;
+  createPostTitle: string = "";
+  createPostText: string = "";
 
   constructor() {
     makeAutoObservable(this);
@@ -172,6 +178,39 @@ export class PostStore {
         this.posts.sort((a, b) => a.id - b.id);
         this.currentSortingValue = selectedValue;
         break;
+    }
+  };
+
+  handleTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.createPostTitle = e.target.value;
+    console.log(e.target.value);
+    if (this.createPostTitle.length >= 10 && this.createPostText.length >= 30) {
+      this.showCreatePostWarning = false;
+    }
+  };
+
+  handleTextInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    this.createPostText = e.target.value;
+    console.log(e.target.value);
+    if (this.createPostTitle.length >= 10 && this.createPostText.length >= 30) {
+      this.showCreatePostWarning = false;
+    }
+  };
+
+  handleSubmitCreatePostForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const title = formData.get("title") as string;
+    const text = formData.get("text") as string;
+
+    console.log(title);
+    console.log(text);
+
+    if (title.length < 10 || text.length < 30) {
+      this.showCreatePostWarning = true;
+      return;
     }
   };
 }

@@ -1,6 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
+import "../../styles/LoginForm.css";
 
 const LoginModalForm = observer(() => {
   const { userStore } = GlobalStore();
