@@ -58,8 +58,8 @@ const PostList = observer(() => {
               );
             }}
             hasMore={postStore.hasMoreMP}
-            loader={<h1>LOADING BY INF SCR</h1>}
-            endMessage={<h1>LOADING IS OVER</h1>}
+            loader={<div>LOADING BY INF SCR</div>}
+            endMessage={<div>LOADING IS OVER</div>}
           >
             {postStore.myPosts.map((post) => (
               <PostItem key={post.id} post={post} typeOfList="my-posts" />

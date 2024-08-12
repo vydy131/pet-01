@@ -33,7 +33,7 @@ const PostItem: React.FC<IPostItem> = ({ post, typeOfList }) => {
       <div className="post-item-body">{post.body}</div>
       {author ? (
         <address className="post-item-author">
-          from{" "}
+          from
           <span
             onClick={() => {
               userStore.changeVisibleProfileId(post.userId);
@@ -41,8 +41,7 @@ const PostItem: React.FC<IPostItem> = ({ post, typeOfList }) => {
             }}
           >
             {author.username}
-          </span>{" "}
-          <br />
+          </span>
           <a href={`mailto:${author.email}`} className="post-item-author-email">
             {author.email}
           </a>

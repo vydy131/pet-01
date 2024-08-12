@@ -53,7 +53,7 @@ const Header = observer(() => {
           </ModalDialog>
         ) : null}
       </div>
-      <nav className="nav-bar">
+      <div className="nav-bar">
         <Link
           to="/NewsScreen"
           className={
@@ -74,7 +74,7 @@ const Header = observer(() => {
         >
           About
         </Link>
-      </nav>
+      </div>
     </div>
   );
 });

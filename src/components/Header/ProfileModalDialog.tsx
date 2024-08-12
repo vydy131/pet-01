@@ -31,40 +31,25 @@ const ProfileModalDialog: React.FC<IProfileModalDialog> = observer(
       <div>
         <div className="modal">
           <div className="modal-content">
-            <h2>{user.name}</h2>
-            <p>
-              <strong>Username:</strong> {user.username}
-            </p>
-            <p>
-              <strong>Email:</strong> {user.email}
-            </p>
-            <p>
-              <strong>Phone:</strong> {user.phone}
-            </p>
-            <p>
-              <strong>Website:</strong> {user.website}
-            </p>
-            <h3>Address</h3>
-            <p>
+            <div>{user.name}</div>
+            <div>Username:</div> {user.username}
+            <div>Email:</div> {user.email}
+            <div>Phone:</div> {user.phone}
+            <div>Website:</div> {user.website}
+            <div>Address</div>
+            <div>
               {user.address.street}, {user.address.suite}
-            </p>
-            <p>
+            </div>
+            <div>
               {user.address.city}, {user.address.zipcode}
-            </p>
-            <p>
-              <strong>Geo:</strong> {user.address.geo.lat},{" "}
-              {user.address.geo.lng}
-            </p>
-            <h3>Company</h3>
-            <p>
-              <strong>Name:</strong> {user.company.name}
-            </p>
-            <p>
-              <strong>Catchphrase:</strong> {user.company.catchPhrase}
-            </p>
-            <p>
-              <strong>BS:</strong> {user.company.bs}
-            </p>
+            </div>
+            <div>
+              Geo: {user.address.geo.lat}, {user.address.geo.lng}
+            </div>
+            <div>Company</div>
+            <div>Name:</div> {user.company.name}
+            <div>Catchphrase:</div> {user.company.catchPhrase}
+            <div>BS:</div> {user.company.bs}
           </div>
         </div>
         {userId === -1 ? (
