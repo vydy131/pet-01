@@ -42,7 +42,7 @@ const Header = observer(() => {
         ) : null}
         {userStore.currentModalDialog === ModalDialogs.Profile ? (
           <ModalDialog touchBackground={handleBackgroundClick}>
-            <ProfileModalDialog />
+            <ProfileModalDialog userId={-1} />
           </ModalDialog>
         ) : null}
       </div>

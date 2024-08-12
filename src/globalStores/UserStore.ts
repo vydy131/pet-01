@@ -26,6 +26,7 @@ export class UserStore {
   apiURL = "https://jsonplaceholder.typicode.com/users";
 
   currentUser: IUser | null = null;
+  loadedUser: IUser | null = null;
   currentTab: NavTabs = NavTabs.Null;
   currentModalDialog: ModalDialogs = ModalDialogs.Null;
   currentAuthLevel: AuthLevel = AuthLevel.unauthorized;
@@ -100,4 +101,24 @@ export class UserStore {
   };
 
   handleSignUp = () => {};
+
+  async loadUserProfile(userId: number) {
+    if (userId === -1) {
+      runInAction(() => {
+        this.loadedUser = this.currentUser;
+      });
+    } else {
+      try {
+        const response = await axios.get(this.apiURL + `?id=${userId}`);
+        runInAction(() => {
+          this.loadedUser = response.data;
+        });
+      } catch (error) {
+        console.error("Failed to load user profile", error);
+        runInAction(() => {
+          this.loadedUser = null;
+        });
+      }
+    }
+  }
 }
