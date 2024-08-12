@@ -43,11 +43,12 @@ const PostList = observer(() => {
   }, [userStore.currentAuthLevel]);
 
   return (
-    <div className="post-list">
+    <div>
       {postStore.currentFilterValue === "my-posts" && userStore.currentUser ? (
         <>
           <PostCreateForm />
           <InfiniteScroll
+            className="post-list"
             dataLength={postStore.myPosts.length}
             next={() => {
               return postStore.loadNextPosts(
@@ -68,13 +69,14 @@ const PostList = observer(() => {
         </>
       ) : (
         <InfiniteScroll
+          className="post-list"
           dataLength={postStore.posts.length}
           next={() => {
             return postStore.loadNextPosts();
           }}
           hasMore={postStore.hasMore}
-          loader={<h1>LOADING BY INF SCR</h1>}
-          endMessage={<h1>LOADING IS OVER</h1>}
+          loader={<div>LOADING BY INF SCR</div>}
+          endMessage={<div>LOADING IS OVER</div>}
         >
           {postStore.posts.map((post) => (
             <PostItem key={post.id} post={post} typeOfList="all-posts" />

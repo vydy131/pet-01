@@ -15,8 +15,11 @@ const PostItem: React.FC<IPostItem> = ({ post, typeOfList }) => {
   const { userStore } = GlobalStore();
 
   const author = postStore.authorsDataMap[post.userId];
+
+  const randFlexGrow = Math.random();
+
   return (
-    <div className="post-item">
+    <div className="post-item" style={{ flexGrow: randFlexGrow }}>
       <div className="post-item-header">
         <div className="post-item-title">
           {post.title} key={post.id}
@@ -35,6 +38,7 @@ const PostItem: React.FC<IPostItem> = ({ post, typeOfList }) => {
         <address className="post-item-author">
           from
           <span
+            className="post-item-author-username"
             onClick={() => {
               userStore.changeVisibleProfileId(post.userId);
               userStore.changeModalDialog(ModalDialogs.Profile);

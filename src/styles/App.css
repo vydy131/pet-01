@@ -1,10 +1,49 @@
-.App {}
+.App {
+    margin: 0px 10%;
+}
 
 * {
-    /* I use this line with 2px for changing markup */
-    /* border: 2px solid green; */
+    border: 2px solid green;
+}
+
+
+fieldset {
+    border: none;
+}
+
+a {
+    all: unset;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+a:hover,
+button:hover {
+    font-weight: 900;
+    color: gray;
 }
 
 .content {
     min-height: 100vh;
+}
+
+input[type="radio"] {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 2px;
+    cursor: pointer;
+}
+
+input[type="radio"]:checked {
+    background-color: #007bff;
+    border-color: #006adc;
 }

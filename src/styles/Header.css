@@ -1,6 +1,6 @@
-.header {}
-
-
+.header {
+    margin-bottom: 20px;
+}
 
 .high-bar {
     display: flex;
@@ -11,11 +11,17 @@
 .welcome-line {
     display: flex;
     align-self: center;
+    font-size: 1.5rem;
+    padding: 10px;
 }
 
 .profile-button {
     display: flex;
     align-self: center;
+    font-size: 1.5rem;
+    padding: 10px;
+    cursor: pointer;
+
 }
 
 .nav-bar {
@@ -26,12 +32,12 @@
     flex-grow: 1;
     text-align: center;
     text-decoration: none;
+    font-size: 2rem;
+    padding: 12px;
 }
 
 .nav-tab-current {
-    color: green
-}
-
-.nav-tab:hover {
-    color: yellow
+    font-weight: 600;
+    background-color: wheat;
+    color: purple;
 }

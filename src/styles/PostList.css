@@ -1,6 +1,19 @@
-.post-list {}
+.post-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
-.post-item {}
+.post-item {
+    flex: 1 1 calc(33.33% - 20px);
+    min-width: 300px;
+    max-width: 600px;
+    height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    box-sizing: border-box;
+}
 
 .post-item-header {
     display: flex;
@@ -20,6 +33,10 @@
 
 .post-item-author {
     text-align: right;
+}
+
+.post-item-author-username {
+    cursor: pointer;
 }
 
 .post-item-author-email {}

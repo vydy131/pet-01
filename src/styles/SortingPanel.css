@@ -1,1 +1,8 @@
-.sort-panel {}
+.sort-panel {
+    margin: 10px 0px;
+}
+
+fieldset>label {
+    font-size: 1.2rem;
+    margin-right: 15px;
+}
