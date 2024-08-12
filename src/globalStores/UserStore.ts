@@ -31,6 +31,8 @@ export class UserStore {
   currentModalDialog: ModalDialogs = ModalDialogs.Null;
   currentAuthLevel: AuthLevel = AuthLevel.unauthorized;
 
+  visibleProfileId: number = -1;
+
   // These variables are here for Login form
   authUsername: string = "";
   authName: string = "";
@@ -62,6 +64,10 @@ export class UserStore {
 
   changeModalDialog(newPosition: ModalDialogs) {
     this.currentModalDialog = newPosition;
+  }
+
+  changeVisibleProfileId(newPosition: number) {
+    this.visibleProfileId = newPosition;
   }
 
   handleUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
@@ -183,7 +189,7 @@ export class UserStore {
       try {
         const response = await axios.get(this.apiURL + `?id=${userId}`);
         runInAction(() => {
-          this.loadedUser = response.data;
+          this.loadedUser = response.data[0];
         });
       } catch (error) {
         console.error("Failed to load user profile", error);

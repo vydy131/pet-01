@@ -24,6 +24,7 @@ const Header = observer(() => {
         <div className="profile-button">
           <button
             onClick={() => {
+              userStore.changeVisibleProfileId(-1);
               if (userStore.currentAuthLevel === AuthLevel.unauthorized) {
                 userStore.changeModalDialog(ModalDialogs.Login);
               } else {
@@ -43,7 +44,7 @@ const Header = observer(() => {
         ) : null}
         {userStore.currentModalDialog === ModalDialogs.Profile ? (
           <ModalDialog touchBackground={handleBackgroundClick}>
-            <ProfileModalDialog userId={-1} />
+            <ProfileModalDialog userId={userStore.visibleProfileId} />
           </ModalDialog>
         ) : null}
         {userStore.currentModalDialog === ModalDialogs.Signup ? (

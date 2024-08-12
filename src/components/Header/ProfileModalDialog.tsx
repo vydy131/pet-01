@@ -23,6 +23,10 @@ const ProfileModalDialog: React.FC<IProfileModalDialog> = observer(
       return <div>Loading...</div>;
     }
 
+    if (!user.address || !user.company) {
+      return <div>User data is incomplete.</div>;
+    }
+
     return (
       <div>
         <div className="modal">
