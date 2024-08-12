@@ -17,8 +17,8 @@ export enum NavTabs {
 export enum ModalDialogs {
   Login,
   Profile,
+  Signup,
   CreatingPost,
-  ChangingPost,
   Null,
 }
 
@@ -33,6 +33,7 @@ export class UserStore {
   // These variables are here for Login form
   authUsername: string = "";
   authName: string = "";
+  warningText = "";
 
   constructor() {
     makeAutoObservable(this);
@@ -73,13 +74,16 @@ export class UserStore {
       axios.get(this.apiURL + `?username=${username}`).then((incomingData) => {
         if (incomingData.data.length === 0) {
           console.log("ERROR: NO USER WITH SUCH USERNAME");
+          this.warningText = "Wrong username or name";
         } else if (incomingData.data[0].name === name) {
           console.log("AUTH IS SUCCESSFUL");
           this.currentUser = incomingData.data[0];
           this.currentAuthLevel = AuthLevel.authorized;
           this.currentModalDialog = ModalDialogs.Profile;
+          this.warningText = "";
         } else {
           console.log("WRONG NAME");
+          this.warningText = "Wrong username or name";
         }
       });
     } catch (error) {
@@ -94,4 +98,6 @@ export class UserStore {
       this.currentModalDialog = ModalDialogs.Login;
     });
   };
+
+  handleSignUp = () => {};
 }

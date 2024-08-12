@@ -32,8 +32,9 @@ const LoginModalForm = observer(() => {
           <button onClick={userStore.handlePreparedData}>
             Continue with prepared data
           </button>
+          <div>{userStore.warningText}</div>
+          <button type="submit">Log in</button>
         </fieldset>
-        <button type="submit">Log in</button>
 
         <hr />
         <button

@@ -4,7 +4,7 @@ import "../../styles/Header.css";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 import { AuthLevel, ModalDialogs, NavTabs } from "../../globalStores/UserStore";
 import { observer } from "mobx-react-lite";
-import LoginModalDialog from "./LoginModalForm";
+import LoginModalDialog from "./LoginModalDialog";
 import ModalDialog from "../UI/ModalDialog";
 import ProfileModalDialog from "./ProfileModalDialog";
 
