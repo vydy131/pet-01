@@ -1,8 +1,4 @@
-.App {
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
-    font-style: normal;
-}
+.App {}
 
 * {
     /* I use this line with 2px for changing markup */

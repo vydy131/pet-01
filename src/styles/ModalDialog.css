@@ -12,14 +12,7 @@
 
 .modal-base {
     position: absolute;
-    min-height: 300px;
-    min-width: 300px;
-    border-radius: 10px;
-    background-color: bisque;
     cursor: default;
-    padding: 40px 20px;
 }
 
-.modal-content {
-    position: relative;
-}
+.modal-content {}

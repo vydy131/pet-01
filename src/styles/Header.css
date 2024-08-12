@@ -1,14 +1,6 @@
-.header {
-    /* background-color: aquamarine; */
-    border-bottom: 1px solid grey;
-}
+.header {}
 
-.welcome-line {
-    display: flex;
-    align-self: center;
-    font-size: 1.5rem;
-    padding: 10px;
-}
+
 
 .high-bar {
     display: flex;
@@ -16,11 +8,14 @@
     align-content: baseline;
 }
 
+.welcome-line {
+    display: flex;
+    align-self: center;
+}
+
 .profile-button {
     display: flex;
     align-self: center;
-    font-size: 1.5rem;
-    padding: 10px;
 }
 
 .nav-bar {
@@ -28,11 +23,8 @@
 }
 
 .nav-tab {
-    color: brown;
-    padding: 10px;
     flex-grow: 1;
     text-align: center;
-    font-size: 1.7rem;
     text-decoration: none;
 }
 
@@ -41,5 +33,5 @@
 }
 
 .nav-tab:hover {
-    color: chocolate
+    color: yellow
 }
