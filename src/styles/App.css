@@ -1,11 +1,19 @@
 .App {
+    /* background-color: bisque; */
+}
+
+.content {
+    min-height: 100vh;
     margin: 0px 10%;
 }
 
 * {
-    border: 2px solid green;
+    /* border: 2px solid green; */
 }
 
+html {
+    scroll-behavior: smooth;
+}
 
 fieldset {
     border: none;
@@ -29,9 +37,7 @@ button:hover {
     color: gray;
 }
 
-.content {
-    min-height: 100vh;
-}
+
 
 input[type="radio"] {
     appearance: none;

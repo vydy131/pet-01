@@ -10,9 +10,15 @@
     justify-content: center;
 }
 
+fieldset {
+    border: 1px solid gray;
+    border-radius: 10px;
+}
+
 .modal-base {
     position: absolute;
     cursor: default;
+    padding: 100px;
+    border-radius: 30px;
+    background-color: white;
 }
-
-.modal-content {}

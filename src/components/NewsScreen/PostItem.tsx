@@ -16,27 +16,27 @@ const PostItem: React.FC<IPostItem> = ({ post, typeOfList }) => {
 
   const author = postStore.authorsDataMap[post.userId];
 
-  const randFlexGrow = Math.random();
-
   return (
-    <div className="post-item" style={{ flexGrow: randFlexGrow }}>
+    <div className="post-item">
       <div className="post-item-header">
         <div className="post-item-title">
           {post.title} key={post.id}
         </div>
-        <button
-          className="post-item-delete-button"
-          onClick={() => {
+
+        <img
+          src="https://ikonki.svgpng.ru/wp-content/uploads/2021/12/Krestiksvgpng.ru_.png"
+          alt="Hide"
+          onClick={(e) => {
             postStore.deletePost(post.id, typeOfList);
+            e.stopPropagation();
           }}
-        >
-          Hide post
-        </button>
+          className="post-item-delete-button"
+        />
       </div>
       <div className="post-item-body">{post.body}</div>
       {author ? (
         <address className="post-item-author">
-          from
+          from{" "}
           <span
             className="post-item-author-username"
             onClick={() => {
@@ -46,9 +46,14 @@ const PostItem: React.FC<IPostItem> = ({ post, typeOfList }) => {
           >
             {author.username}
           </span>
-          <a href={`mailto:${author.email}`} className="post-item-author-email">
-            {author.email}
-          </a>
+          <div>
+            <a
+              href={`mailto:${author.email}`}
+              className="post-item-author-email"
+            >
+              {author.email}
+            </a>
+          </div>
         </address>
       ) : (
         <address className="post-item-author-loading">Loading...</address>

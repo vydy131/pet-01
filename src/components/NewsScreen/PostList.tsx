@@ -7,6 +7,7 @@ import PostItem from "./PostItem";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 import PostCreateForm from "./PostCreateForm";
 import { AuthLevel } from "../../globalStores/UserStore";
+import { LoadIsOnComponent, LoadIsOverComponent } from "./LoadFillers";
 
 const PostList = observer(() => {
   const { postStore } = NewsStore();
@@ -59,8 +60,16 @@ const PostList = observer(() => {
               );
             }}
             hasMore={postStore.hasMoreMP}
-            loader={<div>LOADING BY INF SCR</div>}
-            endMessage={<div>LOADING IS OVER</div>}
+            loader={
+              <div>
+                <LoadIsOnComponent />
+              </div>
+            }
+            endMessage={
+              <div>
+                <LoadIsOverComponent />
+              </div>
+            }
           >
             {postStore.myPosts.map((post) => (
               <PostItem key={post.id} post={post} typeOfList="my-posts" />
@@ -75,8 +84,16 @@ const PostList = observer(() => {
             return postStore.loadNextPosts();
           }}
           hasMore={postStore.hasMore}
-          loader={<div>LOADING BY INF SCR</div>}
-          endMessage={<div>LOADING IS OVER</div>}
+          loader={
+            <div>
+              <LoadIsOnComponent />
+            </div>
+          }
+          endMessage={
+            <div>
+              <LoadIsOverComponent />
+            </div>
+          }
         >
           {postStore.posts.map((post) => (
             <PostItem key={post.id} post={post} typeOfList="all-posts" />

@@ -20,7 +20,9 @@ const Header = observer(() => {
   return (
     <div className="header">
       <div className="high-bar">
-        <div className="welcome-line">Welcome to my website!</div>
+        <div id="top" className="welcome-line">
+          Welcome to my website!
+        </div>
         <div className="profile-button">
           <button
             onClick={() => {
