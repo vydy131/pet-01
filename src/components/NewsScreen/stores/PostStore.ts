@@ -1,8 +1,8 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { IPost } from "../../../interfaces/News-Post";
 import axios from "axios";
-import { log } from "console";
 import { ChangeEvent } from "react";
+import { IUser } from "../../../interfaces/User-Profile";
 
 export class PostStore {
   posts: IPost[] = [];
@@ -138,10 +138,18 @@ export class PostStore {
       }
     }
     runInAction(() => {
-      this.posts = [...this.posts]; // Для общего списка постов
-      this.myPosts = [...this.myPosts]; // Для моих постов
+      this.posts = [...this.posts];
+      this.myPosts = [...this.myPosts];
     });
   }
+
+  updateAuthorsDataMap = (userProfile: IUser) => {
+    const { id, username, email } = userProfile;
+    this.authorsDataMap[id] = {
+      username,
+      email,
+    };
+  };
 
   deletePost = (id: number, typeOfList: "all-posts" | "my-posts") => {
     if (typeOfList === "all-posts") {
@@ -211,9 +219,6 @@ export class PostStore {
 
     const title = formData.get("title") as string;
     const text = formData.get("text") as string;
-
-    console.log(title);
-    console.log(text);
 
     if (title.length < 10 || text.length < 30) {
       this.showCreatePostWarning = true;

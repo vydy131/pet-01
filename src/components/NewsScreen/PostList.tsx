@@ -6,6 +6,7 @@ import "../../styles/PostList.css";
 import PostItem from "./PostItem";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 import PostCreateForm from "./PostCreateForm";
+import { AuthLevel } from "../../globalStores/UserStore";
 
 const PostList = observer(() => {
   const { postStore } = NewsStore();
@@ -29,6 +30,17 @@ const PostList = observer(() => {
       postStore.isFirstRenderMP = false;
     }
   }, [postStore, postStore.currentFilterValue]);
+
+  useEffect(() => {
+    if (userStore.currentAuthLevel === AuthLevel.authorized) {
+      if (!postStore.authorsDataMap[userStore.currentUser!.id]) {
+        postStore.authorsDataMap[userStore.currentUser!.id] = {
+          username: userStore.currentUser!.username,
+          email: userStore.currentUser!.email,
+        };
+      }
+    }
+  }, [userStore.currentAuthLevel]);
 
   return (
     <div className="post-list">

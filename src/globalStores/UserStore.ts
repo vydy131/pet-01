@@ -36,6 +36,22 @@ export class UserStore {
   authName: string = "";
   warningText = "";
 
+  // These variables are here for Sign up form
+  name = "";
+  username = "";
+  email = "";
+  street = "";
+  suite = "";
+  city = "";
+  zipcode = "";
+  lat = "";
+  lng = "";
+  phone = "";
+  website = "";
+  companyName = "";
+  catchPhrase = "";
+  bs = "";
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -101,10 +117,61 @@ export class UserStore {
   };
 
   handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => {
-    console.log(e);
-    console.log(typeof e);
     this.currentModalDialog = ModalDialogs.Signup;
     e.preventDefault();
+  };
+
+  handleSubmitSignUpForm = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = e.currentTarget;
+    const formData = new FormData(form);
+
+    const name = formData.get("name") as string;
+    const username = formData.get("username") as string;
+    const email = formData.get("email") as string;
+    const street = formData.get("street") as string;
+    const suite = formData.get("suite") as string;
+    const city = formData.get("city") as string;
+    const zipcode = formData.get("zipcode") as string;
+    const lat = formData.get("lat") as string;
+    const lng = formData.get("lng") as string;
+    const phone = formData.get("phone") as string;
+    const website = formData.get("website") as string;
+    const companyName = formData.get("companyName") as string;
+    const catchPhrase = formData.get("catchPhrase") as string;
+    const bs = formData.get("bs") as string;
+
+    const outcomingData: IUser = {
+      id: Date.now(),
+      name,
+      username,
+      email,
+      address: {
+        street,
+        suite,
+        city,
+        zipcode,
+        geo: {
+          lat,
+          lng,
+        },
+      },
+      phone,
+      website,
+      company: {
+        name: companyName,
+        catchPhrase,
+        bs,
+      },
+    };
+
+    axios
+      .post("https://jsonplaceholder.typicode.com/users", outcomingData)
+      .then((response) => {
+        this.currentUser = response.data;
+        this.currentAuthLevel = AuthLevel.authorized;
+        this.currentModalDialog = ModalDialogs.Null;
+      });
   };
 
   async loadUserProfile(userId: number) {
@@ -126,4 +193,77 @@ export class UserStore {
       }
     }
   }
+
+  handleSignupNameInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.name = e.target.value;
+  };
+
+  handleSignupUsernameInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.username = e.target.value;
+  };
+
+  handleEmailInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.email = e.target.value;
+  };
+
+  handleStreetInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.street = e.target.value;
+  };
+
+  handleSuiteInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.suite = e.target.value;
+  };
+
+  handleCityInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.city = e.target.value;
+  };
+
+  handleZipcodeInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.zipcode = e.target.value;
+  };
+
+  handleLatInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.lat = e.target.value;
+  };
+
+  handleLngInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.lng = e.target.value;
+  };
+
+  handlePhoneInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.phone = e.target.value;
+  };
+
+  handleWebsiteInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.website = e.target.value;
+  };
+
+  handleCompanyNameInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.companyName = e.target.value;
+  };
+
+  handleCatchPhraseInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.catchPhrase = e.target.value;
+  };
+
+  handleBsInput = (e: ChangeEvent<HTMLInputElement>) => {
+    this.bs = e.target.value;
+  };
+
+  handleClearSignupForm = () => {
+    this.name = "";
+    this.username = "";
+    this.email = "";
+    this.street = "";
+    this.suite = "";
+    this.city = "";
+    this.zipcode = "";
+    this.lat = "";
+    this.lng = "";
+    this.phone = "";
+    this.website = "";
+    this.companyName = "";
+    this.catchPhrase = "";
+    this.bs = "";
+  };
 }
