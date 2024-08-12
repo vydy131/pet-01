@@ -1,5 +1,5 @@
 import React from "react";
-import { IPost } from "../../interfaces/News-Post-Incoming";
+import { IPost } from "../../interfaces/News-Post";
 import { NewsStore } from "./stores/NewsStoreProvider";
 import "../../styles/PostList.css";
 

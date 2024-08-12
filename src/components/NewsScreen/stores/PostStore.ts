@@ -1,5 +1,5 @@
 import { makeAutoObservable, runInAction } from "mobx";
-import { IPost } from "../../../interfaces/News-Post-Incoming";
+import { IPost } from "../../../interfaces/News-Post";
 import axios from "axios";
 import { log } from "console";
 import { ChangeEvent } from "react";
@@ -183,7 +183,6 @@ export class PostStore {
 
   handleTitleInput = (e: ChangeEvent<HTMLInputElement>) => {
     this.createPostTitle = e.target.value;
-    console.log(e.target.value);
     if (this.createPostTitle.length >= 10 && this.createPostText.length >= 30) {
       this.showCreatePostWarning = false;
     }
@@ -191,13 +190,15 @@ export class PostStore {
 
   handleTextInput = (e: ChangeEvent<HTMLTextAreaElement>) => {
     this.createPostText = e.target.value;
-    console.log(e.target.value);
     if (this.createPostTitle.length >= 10 && this.createPostText.length >= 30) {
       this.showCreatePostWarning = false;
     }
   };
 
-  handleSubmitCreatePostForm = (e: React.FormEvent<HTMLFormElement>) => {
+  handleSubmitCreatePostForm = (
+    e: React.FormEvent<HTMLFormElement>,
+    userId: number
+  ) => {
     e.preventDefault();
     const form = e.currentTarget;
     const formData = new FormData(form);
@@ -212,5 +213,23 @@ export class PostStore {
       this.showCreatePostWarning = true;
       return;
     }
+
+    const outcomingData: IPost = {
+      userId,
+      id: Date.now(),
+      title,
+      body: text,
+    };
+
+    axios
+      .post("https://jsonplaceholder.typicode.com/posts", outcomingData)
+      .then((response) => {
+        this.myPosts = [response.data, ...this.myPosts];
+        this.posts = [...this.posts, response.data];
+      });
+
+    this.createPostText = "";
+    this.createPostTitle = "";
+    this.showCreatePostWarning = false;
   };
 }

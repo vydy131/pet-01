@@ -1,13 +1,21 @@
 import React from "react";
 import { NewsStore } from "./stores/NewsStoreProvider";
 import "../../styles/CreatePostForm.css";
+import { observer } from "mobx-react-lite";
+import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 
-const CreatePostForm = () => {
+const PostCreateForm = observer(() => {
   const { postStore } = NewsStore();
+  const { userStore } = GlobalStore();
 
   return (
     <div>
-      <form className="form" onSubmit={postStore.handleSubmitCreatePostForm}>
+      <form
+        className="form"
+        onSubmit={(e) => {
+          postStore.handleSubmitCreatePostForm(e, userStore.currentUser!.id);
+        }}
+      >
         <fieldset className="fieldset">
           <legend className="fieldset-legend">Create new post!</legend>
           <input
@@ -37,6 +45,6 @@ const CreatePostForm = () => {
       </form>
     </div>
   );
-};
+});
 
-export default CreatePostForm;
+export default PostCreateForm;

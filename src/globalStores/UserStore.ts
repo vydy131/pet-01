@@ -1,6 +1,6 @@
 import { makeAutoObservable, runInAction } from "mobx";
 import { ChangeEvent } from "react";
-import { IUser } from "../interfaces/User-Profile-Incoming";
+import { IUser } from "../interfaces/User-Profile";
 import axios from "axios";
 
 export enum AuthLevel {

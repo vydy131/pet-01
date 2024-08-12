@@ -5,7 +5,7 @@ import { NewsStore } from "./stores/NewsStoreProvider";
 import "../../styles/PostList.css";
 import PostItem from "./PostItem";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
-import CreatePostForm from "./CreatePostForm";
+import PostCreateForm from "./PostCreateForm";
 
 const PostList = observer(() => {
   const { postStore } = NewsStore();
@@ -34,7 +34,7 @@ const PostList = observer(() => {
     <div className="post-list">
       {postStore.currentFilterValue === "my-posts" && userStore.currentUser ? (
         <>
-          <CreatePostForm />
+          <PostCreateForm />
           <InfiniteScroll
             dataLength={postStore.myPosts.length}
             next={() => {

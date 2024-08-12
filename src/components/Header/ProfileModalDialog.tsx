@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React from "react";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
-import { IUser } from "../../interfaces/User-Profile-Incoming";
+import { IUser } from "../../interfaces/User-Profile";
 import "../../styles/Profile.css";
 
 const ProfileModalDialog = observer(() => {
