@@ -7,6 +7,7 @@ import { observer } from "mobx-react-lite";
 import LoginModalDialog from "./LoginModalDialog";
 import ModalDialog from "../UI/ModalDialog";
 import ProfileModalDialog from "./ProfileModalDialog";
+import SignupModalDialog from "./SignupModalDialog";
 
 const Header = observer(() => {
   const { userStore } = GlobalStore();
@@ -32,7 +33,7 @@ const Header = observer(() => {
           >
             {userStore.currentAuthLevel === AuthLevel.authorized
               ? "My profile"
-              : "Log in"}
+              : "Sign up / Log in"}
           </button>
         </div>
         {userStore.currentModalDialog === ModalDialogs.Login ? (
@@ -43,6 +44,11 @@ const Header = observer(() => {
         {userStore.currentModalDialog === ModalDialogs.Profile ? (
           <ModalDialog touchBackground={handleBackgroundClick}>
             <ProfileModalDialog userId={-1} />
+          </ModalDialog>
+        ) : null}
+        {userStore.currentModalDialog === ModalDialogs.Signup ? (
+          <ModalDialog touchBackground={handleBackgroundClick}>
+            <SignupModalDialog />
           </ModalDialog>
         ) : null}
       </div>

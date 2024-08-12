@@ -35,15 +35,8 @@ const LoginModalForm = observer(() => {
           <div>{userStore.warningText}</div>
           <button type="submit">Log in</button>
         </fieldset>
-
         <hr />
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-          }}
-        >
-          Sign up
-        </button>
+        <button onClick={userStore.handleSignUp}>Sign up</button>
       </form>
     </div>
   );

@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 import { IUser } from "../../interfaces/User-Profile";
 import "../../styles/Profile.css";
-import axios from "axios";
 
 // -1 for current user profile, other values for load user from server
 interface IProfileModalDialog {
@@ -18,7 +17,7 @@ const ProfileModalDialog: React.FC<IProfileModalDialog> = observer(
       userStore.loadUserProfile(userId);
     }, [userId, userStore]);
 
-    const user = userStore.loadedUser;
+    const user: IUser | null = userStore.loadedUser;
 
     if (!user) {
       return <div>Loading...</div>;
@@ -64,7 +63,9 @@ const ProfileModalDialog: React.FC<IProfileModalDialog> = observer(
             </p>
           </div>
         </div>
-        <button onClick={userStore.handleLogOut}>Log out</button>
+        {userId === -1 ? (
+          <button onClick={userStore.handleLogOut}>Log out</button>
+        ) : null}
       </div>
     );
   }

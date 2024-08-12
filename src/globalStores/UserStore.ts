@@ -100,7 +100,12 @@ export class UserStore {
     });
   };
 
-  handleSignUp = () => {};
+  handleSignUp = (e: React.MouseEvent<HTMLButtonElement>) => {
+    console.log(e);
+    console.log(typeof e);
+    this.currentModalDialog = ModalDialogs.Signup;
+    e.preventDefault();
+  };
 
   async loadUserProfile(userId: number) {
     if (userId === -1) {
