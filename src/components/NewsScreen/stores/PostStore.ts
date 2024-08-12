@@ -143,10 +143,16 @@ export class PostStore {
     });
   }
 
-  deletePost = (id: number) => {
-    this.posts = this.posts.filter((post) => {
-      return post.id !== id;
-    });
+  deletePost = (id: number, typeOfList: "all-posts" | "my-posts") => {
+    if (typeOfList === "all-posts") {
+      this.posts = this.posts.filter((post) => {
+        return post.id !== id;
+      });
+    } else {
+      this.myPosts = this.myPosts.filter((post) => {
+        return post.id !== id;
+      });
+    }
   };
 
   filterPosts = (selectedValue: string) => {

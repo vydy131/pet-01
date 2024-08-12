@@ -3,7 +3,12 @@ import { IPost } from "../../interfaces/News-Post";
 import { NewsStore } from "./stores/NewsStoreProvider";
 import "../../styles/PostList.css";
 
-const PostItem: React.FC<IPost> = (post: IPost) => {
+interface IPostItem {
+  post: IPost;
+  typeOfList: "all-posts" | "my-posts";
+}
+
+const PostItem: React.FC<IPostItem> = ({ post, typeOfList }) => {
   const { postStore } = NewsStore();
 
   const author = postStore.authorsDataMap[post.userId];
@@ -16,7 +21,7 @@ const PostItem: React.FC<IPost> = (post: IPost) => {
         <button
           className="post-item-delete-button"
           onClick={() => {
-            postStore.deletePost(post.id);
+            postStore.deletePost(post.id, typeOfList);
           }}
         >
           Hide post

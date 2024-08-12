@@ -50,7 +50,7 @@ const PostList = observer(() => {
             endMessage={<h1>LOADING IS OVER</h1>}
           >
             {postStore.myPosts.map((post) => (
-              <PostItem key={post.id} {...post} />
+              <PostItem key={post.id} post={post} typeOfList="my-posts" />
             ))}
           </InfiniteScroll>
         </>
@@ -65,7 +65,7 @@ const PostList = observer(() => {
           endMessage={<h1>LOADING IS OVER</h1>}
         >
           {postStore.posts.map((post) => (
-            <PostItem key={post.id} {...post} />
+            <PostItem key={post.id} post={post} typeOfList="all-posts" />
           ))}
         </InfiniteScroll>
       )}
