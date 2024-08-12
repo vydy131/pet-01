@@ -2,55 +2,85 @@ import { observer } from "mobx-react-lite";
 import { useEffect } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { NewsStore } from "./stores/NewsStoreProvider";
+import "../../styles/PostList.css";
+import PostItem from "./PostItem";
+import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
+import PostCreateForm from "./PostCreateForm";
+import { AuthLevel } from "../../globalStores/UserStore";
 
 const PostList = observer(() => {
   const { postStore } = NewsStore();
+  const { userStore } = GlobalStore();
 
-  // There is an unknown bug, so don't erase isFirstRender and others rows
-  // because in other way useEffect runs twice without offset's change
-  let isFirstRender = true;
   useEffect(() => {
-    if (isFirstRender) {
+    if (postStore.isFirstRender) {
       postStore.initLoadingPosts();
     }
-    isFirstRender = false;
+    postStore.isFirstRender = false;
   }, [postStore]);
 
+  useEffect(() => {
+    if (postStore.currentFilterValue === "my-posts" && userStore.currentUser) {
+      if (postStore.isFirstRenderMP) {
+        postStore.initLoadingPosts(
+          `https://jsonplaceholder.typicode.com/posts?userId=${userStore.currentUser.id}&`,
+          true
+        );
+      }
+      postStore.isFirstRenderMP = false;
+    }
+  }, [postStore, postStore.currentFilterValue]);
+
+  useEffect(() => {
+    if (userStore.currentAuthLevel === AuthLevel.authorized) {
+      if (!postStore.authorsDataMap[userStore.currentUser!.id]) {
+        postStore.authorsDataMap[userStore.currentUser!.id] = {
+          username: userStore.currentUser!.username,
+          email: userStore.currentUser!.email,
+        };
+      }
+    }
+  }, [userStore.currentAuthLevel]);
+
   return (
-    <div>
-      <InfiniteScroll
-        dataLength={postStore.posts.length}
-        next={() => postStore.loadNextPosts()}
-        hasMore={postStore.hasMore}
-        loader={<h1>LOADING BY INF SCR</h1>}
-        endMessage={<h1>LOADING IS OVER</h1>}
-      >
-        {postStore.posts.map((post) => {
-          const author = postStore.authorsDataMap[post.userId];
-          return (
-            <div key={post.id}>
-              <div>
-                {post.title} key={post.id}
-              </div>
-              <div>{post.body}</div>
-              {author ? (
-                <address>
-                  {author.username} - {author.email}
-                </address>
-              ) : (
-                <address>Loading...</address>
-              )}
-              <button
-                onClick={() => {
-                  postStore.deletePost(post.id);
-                }}
-              >
-                Hide post
-              </button>
-            </div>
-          );
-        })}
-      </InfiniteScroll>
+    <div className="post-list">
+      {postStore.currentFilterValue === "my-posts" && userStore.currentUser ? (
+        <>
+          <PostCreateForm />
+          <InfiniteScroll
+            dataLength={postStore.myPosts.length}
+            next={() => {
+              return postStore.loadNextPosts(
+                `https://jsonplaceholder.typicode.com/posts?userId=${
+                  userStore.currentUser!.id
+                }&`,
+                true
+              );
+            }}
+            hasMore={postStore.hasMoreMP}
+            loader={<h1>LOADING BY INF SCR</h1>}
+            endMessage={<h1>LOADING IS OVER</h1>}
+          >
+            {postStore.myPosts.map((post) => (
+              <PostItem key={post.id} post={post} typeOfList="my-posts" />
+            ))}
+          </InfiniteScroll>
+        </>
+      ) : (
+        <InfiniteScroll
+          dataLength={postStore.posts.length}
+          next={() => {
+            return postStore.loadNextPosts();
+          }}
+          hasMore={postStore.hasMore}
+          loader={<h1>LOADING BY INF SCR</h1>}
+          endMessage={<h1>LOADING IS OVER</h1>}
+        >
+          {postStore.posts.map((post) => (
+            <PostItem key={post.id} post={post} typeOfList="all-posts" />
+          ))}
+        </InfiniteScroll>
+      )}
     </div>
   );
 });
