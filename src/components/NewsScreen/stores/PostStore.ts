@@ -25,6 +25,8 @@ export class PostStore {
   createPostTitle: string = "";
   createPostText: string = "";
 
+  activeItemId = -1;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -242,5 +244,9 @@ export class PostStore {
     this.createPostText = "";
     this.createPostTitle = "";
     this.showCreatePostWarning = false;
+  };
+
+  handleItemClick = (id: number) => {
+    this.activeItemId = id;
   };
 }

@@ -4,20 +4,28 @@ import { NewsStore } from "./stores/NewsStoreProvider";
 import "../../styles/PostList.css";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 import { ModalDialogs } from "../../globalStores/UserStore";
+import { observer } from "mobx-react-lite";
 
 interface IPostItem {
   post: IPost;
   typeOfList: "all-posts" | "my-posts";
 }
 
-const PostItem: React.FC<IPostItem> = ({ post, typeOfList }) => {
+const PostItem: React.FC<IPostItem> = observer(({ post, typeOfList }) => {
   const { postStore } = NewsStore();
   const { userStore } = GlobalStore();
 
   const author = postStore.authorsDataMap[post.userId];
 
   return (
-    <div className="post-item">
+    <div
+      className={`post-item ${
+        post.id === postStore.activeItemId ? "active-item" : null
+      }`}
+      onClick={() => {
+        postStore.handleItemClick(post.id);
+      }}
+    >
       <div className="post-item-header">
         <div className="post-item-title">
           {post.title} key={post.id}
@@ -60,6 +68,6 @@ const PostItem: React.FC<IPostItem> = ({ post, typeOfList }) => {
       )}
     </div>
   );
-};
+});
 
 export default PostItem;
