@@ -54,3 +54,11 @@
     padding: 5px 10px;
     align-self: stretch;
 }
+
+.login-warning {
+    align-self: center;
+    font-size: 1.2rem;
+    padding: 0px 100px;
+    color: red;
+    font-weight: 500;
+}

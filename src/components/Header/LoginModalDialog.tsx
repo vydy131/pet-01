@@ -34,14 +34,13 @@ const LoginModalForm = observer(() => {
                 />
               </label>
             </div>
-
+            <div className="login-warning">{userStore.warningText}</div>
             <button
               onClick={userStore.handlePreparedData}
               className="prepared-data-btn"
             >
               Continue with prepared data
             </button>
-            <div>{userStore.warningText}</div>
             <button type="submit" className="submit-btn">
               Log in
             </button>

@@ -9,10 +9,6 @@
     margin: 0px 10%;
 }
 
-* {
-    border: 2px solid green;
-}
-
 html {
     scroll-behavior: smooth;
 }
