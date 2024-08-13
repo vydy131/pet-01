@@ -1,0 +1,65 @@
+.signup-title {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+.personal-info {
+    display: flex;
+    font-size: 1.2rem;
+    justify-content: space-between;
+}
+
+.signup-inputs {
+    font-size: 1.2rem;
+    margin-left: 5px;
+}
+
+.signup-input-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+.address-info {
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.f-d-c {
+    display: flex;
+    flex-direction: column;
+}
+
+.no-margin {
+    margin: 0px;
+}
+
+.contact-info {
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.company-info {
+    font-size: 1.2rem;
+    display: flex;
+    justify-content: space-around;
+}
+
+.signup-btns {
+    display: flex;
+    justify-content: space-between;
+    align-self: stretch;
+}
+
+.signup-btn {
+    font-size: 1.2rem;
+    margin: 10px 50px;
+    padding: 10px 50px;
+}
+
+.margin-y-10 {
+    margin: 0px 30px;
+}

@@ -4,11 +4,41 @@
     font-style: normal;
 }
 
-* {
-    /* I use this line with 2px for changing markup */
-    /* border: 2px solid green; */
-}
-
 .content {
     min-height: 100vh;
+    margin: 0px 10%;
+}
+
+* {
+    border: 2px solid green;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+fieldset {
+    border: none;
+}
+
+a {
+    all: unset;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+    font-weight: 600;
+    background: linear-gradient(to right top, #ffffff, #a396e4);
+    padding: 10px;
+    text-align: center;
+    border-radius: 20px;
+}
+
+a:hover,
+button:hover {
+    font-weight: 900;
+    color: gray;
 }

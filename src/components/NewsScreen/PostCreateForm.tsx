@@ -27,7 +27,7 @@ const PostCreateForm = observer(() => {
             onChange={postStore.handleTitleInput}
           />
           {postStore.showCreatePostWarning && (
-            <div>
+            <div className="create-post-warning">
               Title must contain at least 10 symbols and text - at least 30
             </div>
           )}

@@ -8,35 +8,48 @@ const LoginModalForm = observer(() => {
 
   return (
     <div>
-      <form onSubmit={userStore.handleSubmitLoginForm}>
-        <fieldset>
-          <legend>Log in</legend>
-          <label>
-            Username
-            <input
-              value={userStore.authUsername}
-              onChange={userStore.handleUsernameInput}
-              type="text"
-              name="username"
-            />
-          </label>
-          <label>
-            Email
-            <input
-              value={userStore.authName}
-              onChange={userStore.handleNameInput}
-              type="name"
-              name="name"
-            />
-          </label>
-          <button onClick={userStore.handlePreparedData}>
-            Continue with prepared data
-          </button>
-          <div>{userStore.warningText}</div>
-          <button type="submit">Log in</button>
+      <form onSubmit={userStore.handleSubmitLoginForm} className="login-form">
+        <fieldset className="modal-fieldset">
+          <legend className="fieldset-legend">Log in</legend>
+          <div className="login-fieldset-content">
+            <div className="login-inputs">
+              <label className="username-label">
+                Username:
+                <input
+                  value={userStore.authUsername}
+                  onChange={userStore.handleUsernameInput}
+                  type="text"
+                  name="username"
+                  className="username-input"
+                />
+              </label>
+              <label className="name-label">
+                Name:
+                <input
+                  value={userStore.authName}
+                  onChange={userStore.handleNameInput}
+                  type="name"
+                  name="name"
+                  className="name-input"
+                />
+              </label>
+            </div>
+
+            <button
+              onClick={userStore.handlePreparedData}
+              className="prepared-data-btn"
+            >
+              Continue with prepared data
+            </button>
+            <div>{userStore.warningText}</div>
+            <button type="submit" className="submit-btn">
+              Log in
+            </button>
+          </div>
         </fieldset>
-        <hr />
-        <button onClick={userStore.handleSignUp}>Sign up</button>
+        <button onClick={userStore.handleSignUp} className="signup-btn">
+          Sign up
+        </button>
       </form>
     </div>
   );

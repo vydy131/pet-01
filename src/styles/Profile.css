@@ -1,0 +1,43 @@
+.modal-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.name {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.username,
+.email,
+.phone,
+.website {
+    margin-top: 10px;
+    font-size: 1.5rem;
+}
+
+.modal-fieldset {
+    margin-top: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.modal-fieldset legend {
+    font-weight: bold;
+    padding: 0 10px;
+    text-align: center;
+}
+
+.company-content,
+.address-content {
+    font-size: 1.3rem;
+}
+
+.logout-btn {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    min-width: 200px;
+    align-self: center;
+}

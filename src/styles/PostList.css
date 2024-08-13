@@ -1,25 +1,53 @@
 .post-list {
-    margin: 8px;
-    margin-top: 0px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 .post-item {
-    margin: 8px;
-    border: 1px solid grey;
+    margin: 0px 10px;
+    position: relative;
+    height: 400px;
+    flex-grow: 1;
+    width: 30%;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    border-radius: 20px;
+    /* box-shadow: 2px 2px 5px gray; */
+    box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
 }
 
 .post-item-header {
     display: flex;
     justify-content: space-between;
+    margin-left: 2px;
 }
 
 .post-item-title {
-    font-size: 2.3rem;
-    font-weight: 500;
+    height: 40px;
+    font-size: 2rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.post-item-delete-button {
+    position: absolute;
+    top: 1%;
+    right: 2%;
+    width: 24px;
+    height: 24px;
+    overflow: visible;
+    cursor: pointer;
 }
 
 .post-item-body {
-    font-size: 1.5rem;
+    font-size: 1.4rem;
+    max-height: 3.3rem;
+    overflow: hidden;
+    margin-left: 2px;
 }
 
 .post-item-title::first-letter,
@@ -29,11 +57,25 @@
 
 .post-item-author {
     text-align: right;
-    font-size: 1.3rem;
+    padding-right: 5px;
+    font-size: 1.2rem;
+    min-height: 2.6rem;
 }
 
-.post-item-author-email {}
+.post-item-author-username {
+    cursor: pointer;
+}
 
-.post-item-author-loading {}
+.post-item-author-username:hover {
+    font-weight: 900;
+    color: gray;
+}
 
-.post-item-delete-button {}
+.post-item-author-email {
+    font-size: 0.9rem;
+    padding-right: 10px;
+}
+
+.post-item-author-loading {
+    text-align: center;
+}
