@@ -31,30 +31,40 @@ const ProfileModalDialog: React.FC<IProfileModalDialog> = observer(
       <div>
         <div className="modal">
           <div className="modal-content">
-            <div>{user.name}</div>
-            <div>Username:</div> {user.username}
-            <div>Email:</div> {user.email}
-            <div>Phone:</div> {user.phone}
-            <div>Website:</div> {user.website}
-            <div>Address</div>
-            <div>
-              {user.address.street}, {user.address.suite}
-            </div>
-            <div>
-              {user.address.city}, {user.address.zipcode}
-            </div>
-            <div>
-              Geo: {user.address.geo.lat}, {user.address.geo.lng}
-            </div>
-            <div>Company</div>
-            <div>Name:</div> {user.company.name}
-            <div>Catchphrase:</div> {user.company.catchPhrase}
-            <div>BS:</div> {user.company.bs}
+            <div className="name">{user.name}</div>
+            <div className="username">Username: {user.username}</div>
+            <div className="email">Email: {user.email}</div>
+            <div className="phone">Phone: {user.phone}</div>
+            <div className="website">Website: {user.website}</div>
+            <fieldset className="modal-fieldset">
+              <legend>Address</legend>
+              <div className="address-content">
+                <div>
+                  {user.address.street}, {user.address.suite}
+                </div>
+                <div>
+                  {user.address.city}, {user.address.zipcode}
+                </div>
+                <div>
+                  Geo: {user.address.geo.lat}, {user.address.geo.lng}
+                </div>
+              </div>
+            </fieldset>
+            <fieldset className="modal-fieldset">
+              <legend>Company</legend>
+              <div className="company-content">
+                <div>Name: {user.company.name}</div>
+                <div>Catchphrase: {user.company.catchPhrase}</div>
+                <div>BS: {user.company.bs}</div>
+              </div>
+            </fieldset>
+            {userId === -1 ? (
+              <button className="logout-btn" onClick={userStore.handleLogOut}>
+                Log out
+              </button>
+            ) : null}
           </div>
         </div>
-        {userId === -1 ? (
-          <button onClick={userStore.handleLogOut}>Log out</button>
-        ) : null}
       </div>
     );
   }

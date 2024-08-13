@@ -1,5 +1,7 @@
 .App {
-    /* background-color: bisque; */
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
 }
 
 .content {
@@ -8,7 +10,7 @@
 }
 
 * {
-    /* border: 2px solid green; */
+    border: 2px solid green;
 }
 
 html {
@@ -29,27 +31,14 @@ button {
     all: unset;
     cursor: pointer;
     font-weight: 600;
+    background: linear-gradient(to right top, #ffffff, #a396e4);
+    padding: 10px;
+    text-align: center;
+    border-radius: 20px;
 }
 
 a:hover,
 button:hover {
     font-weight: 900;
     color: gray;
-}
-
-
-
-input[type="radio"] {
-    appearance: none;
-    width: 12px;
-    height: 12px;
-    background-color: #f0f0f0;
-    border: 2px solid #ccc;
-    border-radius: 2px;
-    cursor: pointer;
-}
-
-input[type="radio"]:checked {
-    background-color: #007bff;
-    border-color: #006adc;
 }

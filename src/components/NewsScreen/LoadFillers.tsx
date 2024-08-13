@@ -4,8 +4,8 @@ import "../../styles/PostList.css";
 function LoadIsOnComponent() {
   return (
     <div className="post-item" style={{ textAlign: "center" }}>
-      <div className="post-item-header">
-        <div className="post-item-title">We load new posts right now</div>
+      <div className="post-item-header" style={{ justifyContent: "center" }}>
+        <div className="post-item-title">We load new posts</div>
       </div>
       <div className="post-item-body">They are really interesting</div>
       <address className="post-item-author-loading">Loading...</address>

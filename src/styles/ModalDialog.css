@@ -10,15 +10,21 @@
     justify-content: center;
 }
 
-fieldset {
-    border: 1px solid gray;
-    border-radius: 10px;
-}
-
 .modal-base {
     position: absolute;
     cursor: default;
-    padding: 100px;
+    padding: 40px;
     border-radius: 30px;
     background-color: white;
+}
+
+.modal-fieldset {
+    border: 1px solid gray;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.fieldset-legend {
+    text-align: center;
 }
