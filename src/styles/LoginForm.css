@@ -1,0 +1,64 @@
+.login-form {
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login-fieldset-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-inputs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 30px;
+}
+
+.username-label {
+    margin-right: 10px;
+}
+
+.username-input {
+    margin-left: 10px;
+    font-size: 2rem;
+}
+
+.name-label {
+    margin-left: 30px;
+    margin-right: 10px;
+
+}
+
+.name-input {
+    margin-left: 10px;
+    font-size: 2rem;
+}
+
+.prepared-data-btn {
+    font-size: 1.5rem;
+    margin: 5px;
+    padding: 5px;
+}
+
+.submit-btn {
+    font-size: 1.5rem;
+    margin: 5px;
+    padding: 5px;
+}
+
+.signup-btn {
+    font-size: 1.5rem;
+    margin: 5px 450px;
+    padding: 5px 10px;
+    align-self: stretch;
+}
+
+.login-warning {
+    align-self: center;
+    font-size: 1.2rem;
+    padding: 0px 100px;
+    color: red;
+    font-weight: 500;
+}

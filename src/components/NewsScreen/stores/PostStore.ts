@@ -8,6 +8,15 @@ export class PostStore {
   posts: IPost[] = [];
   myPosts: IPost[] = [];
   authorsDataMap: { [key: number]: { username: string; email: string } } = {};
+  imagesDataMap: { [key: number]: { title: string; url: string } } = {};
+  commentsDataMap: {
+    [key: number]: {
+      canLoadMore: boolean;
+      comments: {
+        [key: number]: { userEmail: string; title: string; body: string };
+      };
+    };
+  } = {};
 
   currentSortingValue: string = "d-up";
   currentFilterValue: string = "all-posts";
@@ -25,6 +34,8 @@ export class PostStore {
   createPostTitle: string = "";
   createPostText: string = "";
 
+  activeItemId = -1;
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -38,6 +49,20 @@ export class PostStore {
       const incomingData = await this.getById(id);
       runInAction(() => {
         this.authorsDataMap[id] = incomingData;
+      });
+      return incomingData;
+    }
+  }
+
+  private async queryImageById(
+    id: number
+  ): Promise<{ title: string; url: string }> {
+    if (this.imagesDataMap[id]) {
+      return this.imagesDataMap[id];
+    } else {
+      const incomingData = await this.getImageById(id);
+      runInAction(() => {
+        this.imagesDataMap[id] = incomingData;
       });
       return incomingData;
     }
@@ -61,6 +86,27 @@ export class PostStore {
     }
   }
 
+  private async getImageById(
+    id: number,
+    apiURL = "https://jsonplaceholder.typicode.com/photos"
+  ): Promise<{ title: string; url: string }> {
+    try {
+      const incomingData = await axios.get(apiURL + `?id=${id}`);
+      return {
+        // because we get the array of objects (here length === 1)
+        title: incomingData.data[0].title,
+        url: incomingData.data[0].url,
+      };
+    } catch (error) {
+      console.error("Failed to load image", error);
+      // this author will be shown in case of error
+      return {
+        title: "_default_image_",
+        url: "https://play-lh.googleusercontent.com/6UgEjh8Xuts4nwdWzTnWH8QtLuHqRMUB7dp24JYVE2xcYzq4HA8hFfcAbU-R-PC_9uA1",
+      };
+    }
+  }
+
   async initLoadingPosts(
     apiURL: string = "https://jsonplaceholder.typicode.com/posts?",
     withMyPostsFlag = false
@@ -79,6 +125,7 @@ export class PostStore {
             this.hasMore = false;
           }
           this.loadAuthorsData(this.posts);
+          this.loadImagesData(this.posts);
           this.startPosition = this.posts.length;
         } else {
           this.myPosts = [...this.myPosts, ...incomingData.data];
@@ -86,6 +133,7 @@ export class PostStore {
             this.hasMoreMP = false;
           }
           this.loadAuthorsData(this.myPosts);
+          this.loadImagesData(this.myPosts);
           this.startPositionMP = this.myPosts.length;
         }
       });
@@ -112,6 +160,7 @@ export class PostStore {
             this.hasMore = false;
           }
           this.loadAuthorsData(this.posts);
+          this.loadImagesData(this.posts);
           this.startPosition = this.posts.length;
         } else {
           this.myPosts = [...this.myPosts, ...incomingData.data];
@@ -119,6 +168,7 @@ export class PostStore {
             this.hasMoreMP = false;
           }
           this.loadAuthorsData(this.myPosts);
+          this.loadImagesData(this.myPosts);
           this.startPositionMP = this.myPosts.length;
         }
       });
@@ -143,13 +193,31 @@ export class PostStore {
     });
   }
 
-  updateAuthorsDataMap = (userProfile: IUser) => {
-    const { id, username, email } = userProfile;
-    this.authorsDataMap[id] = {
-      username,
-      email,
-    };
-  };
+  async loadImagesData(posts: IPost[]) {
+    // Image.id === Post.id
+    const uniqueImageIds = Array.from(new Set(posts.map((post) => post.id)));
+    for (const imageId of uniqueImageIds) {
+      if (!this.imagesDataMap[imageId]) {
+        const imageData = await this.queryImageById(imageId);
+        runInAction(() => {
+          this.imagesDataMap[imageId] = imageData;
+        });
+      }
+    }
+    // rerender post, 'cause sometimes data is loaded, but not showed
+    runInAction(() => {
+      this.posts = [...this.posts];
+      this.myPosts = [...this.myPosts];
+    });
+  }
+
+  // updateAuthorsDataMap = (userProfile: IUser) => {
+  //   const { id, username, email } = userProfile;
+  //   this.authorsDataMap[id] = {
+  //     username,
+  //     email,
+  //   };
+  // };
 
   deletePost = (id: number, typeOfList: "all-posts" | "my-posts") => {
     if (typeOfList === "all-posts") {
@@ -165,6 +233,10 @@ export class PostStore {
 
   filterPosts = (selectedValue: string) => {
     this.currentFilterValue = selectedValue;
+    this.hasMore = true;
+    this.hasMoreMP = true;
+    this.isFirstRender = true;
+    this.isFirstRenderMP = true;
   };
 
   sortPosts = (selectedValue: string) => {
@@ -243,4 +315,89 @@ export class PostStore {
     this.createPostTitle = "";
     this.showCreatePostWarning = false;
   };
+
+  handleItemClick = (id: number) => {
+    this.activeItemId = id;
+  };
+
+  async loadInitialComments(postId: number) {
+    try {
+      const quantity = 10; // количество комментариев для загрузки
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/comments?postId=${postId}&_start=0&_limit=${quantity}`
+      );
+
+      runInAction(() => {
+        this.commentsDataMap[postId] = {
+          canLoadMore: response.data.length === quantity,
+          comments: response.data.reduce(
+            (
+              acc: { [x: string]: { userEmail: any; title: any; body: any } },
+              comment: { id: string | number; email: any; name: any; body: any }
+            ) => {
+              acc[comment.id] = {
+                userEmail: comment.email,
+                title: comment.name,
+                body: comment.body,
+              };
+              return acc;
+            },
+            {} as {
+              [key: number]: { userEmail: string; title: string; body: string };
+            }
+          ),
+        };
+      });
+    } catch (error) {
+      console.error("Failed to load comments", error);
+    }
+  }
+
+  async loadMoreComments(postId: number) {
+    try {
+      const existingComments = this.commentsDataMap[postId]?.comments || {};
+      const offset = Object.keys(existingComments).length;
+      const quantity = 10; // количество комментариев для подгрузки
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/comments?postId=${postId}&_start=${offset}&_limit=${quantity}`
+      );
+
+      runInAction(() => {
+        if (this.commentsDataMap[postId]) {
+          this.commentsDataMap[postId].canLoadMore =
+            response.data.length === quantity;
+          this.commentsDataMap[postId].comments = {
+            ...this.commentsDataMap[postId].comments,
+            ...response.data.reduce(
+              (
+                acc: { [x: string]: { userEmail: any; title: any; body: any } },
+                comment: {
+                  id: string | number;
+                  email: any;
+                  name: any;
+                  body: any;
+                }
+              ) => {
+                acc[comment.id] = {
+                  userEmail: comment.email,
+                  title: comment.name,
+                  body: comment.body,
+                };
+                return acc;
+              },
+              {} as {
+                [key: number]: {
+                  userEmail: string;
+                  title: string;
+                  body: string;
+                };
+              }
+            ),
+          };
+        }
+      });
+    } catch (error) {
+      console.error("Failed to load more comments", error);
+    }
+  }
 }

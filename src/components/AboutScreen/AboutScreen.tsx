@@ -9,7 +9,12 @@ function AboutScreen() {
     userStore.changeTab(NavTabs.About);
   }, []);
 
-  return <div>AboutScreen</div>;
+  return (
+    <div>
+      AboutScreen
+      <h1>ИН ПРОГРЕСС БЛЕАТЬ</h1>
+    </div>
+  );
 }
 
 export default AboutScreen;

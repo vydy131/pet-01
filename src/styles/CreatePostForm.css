@@ -1,27 +1,51 @@
-.form {}
+.form {
+    margin: 5px;
+    padding: 10px;
+    margin-bottom: 20px;
+}
 
 .fieldset {
     display: flex;
     flex-direction: column;
-    gap: 10px;
 }
 
-.fieldset-legend {}
+.fieldset-legend {
+    font-weight: 500;
+    font-size: 1.5rem;
+}
 
 .title-input {
     font-family: "Roboto", sans-serif;
     font-weight: 400;
-    font-style: normal;
+    font-size: 2rem;
+    border-radius: 20px;
+    padding: 8px;
+    margin: 10px;
 }
 
 .text-input {
-    min-height: 100px;
-    min-width: 500px;
     font-family: "Roboto", sans-serif;
     font-weight: 400;
-    font-style: normal;
+    font-size: 1.5rem;
+    border-radius: 20px;
+    padding: 8px;
+    resize: none;
+    height: 300px;
+    margin: 10px;
+
+}
+
+.create-post-warning {
+    align-self: center;
+    font-size: 1rem;
+    padding: 0px 100px;
+    color: red;
+    font-weight: 500;
 }
 
 .publ-btn {
-    align-self: flex-end;
+    align-self: center;
+    font-size: 1.3rem;
+    padding: 10px 100px;
+    margin-top: 10px;
 }

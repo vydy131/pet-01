@@ -1,5 +1,29 @@
 .sort-panel {
-    margin-top: 8px;
-    margin-left: 8px;
-    /* font-size: 1.3rem; */
+    border: gray 1px solid;
+    margin: 10px 10px;
+    border-radius: 20px;
+}
+
+fieldset>label {
+    font-size: 1.2rem;
+    margin-right: 15px;
+}
+
+input[type="radio"] {
+    appearance: none;
+    width: 4px;
+    height: 4px;
+    margin: 0px;
+    margin-right: 5px;
+    padding: 4px;
+    background-color: #f0f0f0;
+    border: 2px solid #ccc;
+    border-radius: 2px;
+    cursor: pointer;
+    box-sizing: content-box;
+}
+
+input[type="radio"]:checked {
+    background-color: #007bff;
+    border-color: #006adc;
 }

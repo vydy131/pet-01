@@ -26,11 +26,7 @@ const PostCreateForm = observer(() => {
             value={postStore.createPostTitle}
             onChange={postStore.handleTitleInput}
           />
-          {postStore.showCreatePostWarning && (
-            <div>
-              Title must contain at least 10 symbols and text - at least 30
-            </div>
-          )}
+
           <textarea
             className="text-input"
             placeholder="Write here whatever you want"
@@ -38,6 +34,11 @@ const PostCreateForm = observer(() => {
             value={postStore.createPostText}
             onChange={postStore.handleTextInput}
           ></textarea>
+          {postStore.showCreatePostWarning && (
+            <div className="create-post-warning">
+              Title must contain at least 10 symbols and text - at least 30
+            </div>
+          )}
           <button type="submit" className="publ-btn">
             Publish!
           </button>

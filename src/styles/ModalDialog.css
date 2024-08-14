@@ -12,14 +12,19 @@
 
 .modal-base {
     position: absolute;
-    min-height: 300px;
-    min-width: 300px;
-    border-radius: 10px;
-    background-color: bisque;
     cursor: default;
-    padding: 40px 20px;
+    padding: 40px;
+    border-radius: 30px;
+    background-color: white;
 }
 
-.modal-content {
-    position: relative;
+.modal-fieldset {
+    border: 1px solid gray;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.fieldset-legend {
+    text-align: center;
 }

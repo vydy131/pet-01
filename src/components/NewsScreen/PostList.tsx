@@ -7,6 +7,7 @@ import PostItem from "./PostItem";
 import { GlobalStore } from "../../globalStores/GlobalStoreProvider";
 import PostCreateForm from "./PostCreateForm";
 import { AuthLevel } from "../../globalStores/UserStore";
+import { LoadIsOnComponent, LoadIsOverComponent } from "./LoadFillers";
 
 const PostList = observer(() => {
   const { postStore } = NewsStore();
@@ -32,6 +33,12 @@ const PostList = observer(() => {
   }, [postStore, postStore.currentFilterValue]);
 
   useEffect(() => {
+    if (userStore.currentAuthLevel === AuthLevel.unauthorized) {
+      postStore.myPosts = [];
+    }
+  }, [userStore.currentAuthLevel]);
+
+  useEffect(() => {
     if (userStore.currentAuthLevel === AuthLevel.authorized) {
       if (!postStore.authorsDataMap[userStore.currentUser!.id]) {
         postStore.authorsDataMap[userStore.currentUser!.id] = {
@@ -43,11 +50,12 @@ const PostList = observer(() => {
   }, [userStore.currentAuthLevel]);
 
   return (
-    <div className="post-list">
+    <div>
       {postStore.currentFilterValue === "my-posts" && userStore.currentUser ? (
         <>
           <PostCreateForm />
           <InfiniteScroll
+            className="post-list"
             dataLength={postStore.myPosts.length}
             next={() => {
               return postStore.loadNextPosts(
@@ -58,8 +66,16 @@ const PostList = observer(() => {
               );
             }}
             hasMore={postStore.hasMoreMP}
-            loader={<h1>LOADING BY INF SCR</h1>}
-            endMessage={<h1>LOADING IS OVER</h1>}
+            loader={
+              <div>
+                <LoadIsOnComponent />
+              </div>
+            }
+            endMessage={
+              <div>
+                <LoadIsOverComponent />
+              </div>
+            }
           >
             {postStore.myPosts.map((post) => (
               <PostItem key={post.id} post={post} typeOfList="my-posts" />
@@ -68,13 +84,22 @@ const PostList = observer(() => {
         </>
       ) : (
         <InfiniteScroll
+          className="post-list"
           dataLength={postStore.posts.length}
           next={() => {
             return postStore.loadNextPosts();
           }}
           hasMore={postStore.hasMore}
-          loader={<h1>LOADING BY INF SCR</h1>}
-          endMessage={<h1>LOADING IS OVER</h1>}
+          loader={
+            <div>
+              <LoadIsOnComponent />
+            </div>
+          }
+          endMessage={
+            <div>
+              <LoadIsOverComponent />
+            </div>
+          }
         >
           {postStore.posts.map((post) => (
             <PostItem key={post.id} post={post} typeOfList="all-posts" />
