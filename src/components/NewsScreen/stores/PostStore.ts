@@ -203,13 +203,13 @@ export class PostStore {
     });
   }
 
-  updateAuthorsDataMap = (userProfile: IUser) => {
-    const { id, username, email } = userProfile;
-    this.authorsDataMap[id] = {
-      username,
-      email,
-    };
-  };
+  // updateAuthorsDataMap = (userProfile: IUser) => {
+  //   const { id, username, email } = userProfile;
+  //   this.authorsDataMap[id] = {
+  //     username,
+  //     email,
+  //   };
+  // };
 
   deletePost = (id: number, typeOfList: "all-posts" | "my-posts") => {
     if (typeOfList === "all-posts") {
@@ -225,6 +225,10 @@ export class PostStore {
 
   filterPosts = (selectedValue: string) => {
     this.currentFilterValue = selectedValue;
+    this.hasMore = true;
+    this.hasMoreMP = true;
+    this.isFirstRender = true;
+    this.isFirstRenderMP = true;
   };
 
   sortPosts = (selectedValue: string) => {
