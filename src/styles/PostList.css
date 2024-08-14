@@ -7,7 +7,7 @@
 .post-item {
     margin: 0px 10px;
     position: relative;
-    height: 400px;
+    min-height: 400px;
     flex-grow: 1;
     width: 30%;
     min-width: 300px;
@@ -17,6 +17,38 @@
     border-radius: 20px;
     /* box-shadow: 2px 2px 5px gray; */
     box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    overflow: hidden;
+}
+
+.image-div {
+    overflow: hidden;
+    height: 100%;
+    width: 100%;
+
+
+}
+
+.post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    max-height: 1000px;
+}
+
+.post-image-inactive {
+    transition: all 1s ease;
+}
+
+.post-image-inactive:hover {
+    transform: scale(1.2);
+}
+
+.post-item-image-loading {}
+
+.active-item {
+    width: 100%;
+    cursor: default;
 }
 
 .post-item-header {
@@ -43,27 +75,36 @@
     cursor: pointer;
 }
 
-.post-item-body {
+.post-item-inactive-body {
     font-size: 1.4rem;
-    max-height: 3.3rem;
+    max-height: 3.5rem;
     overflow: hidden;
     margin-left: 2px;
 }
 
+.post-item-active-body {
+    font-size: 1.4rem;
+    margin-left: 2px;
+}
+
 .post-item-title::first-letter,
-.post-item-body::first-letter {
+.post-item-inactive-body::first-letter,
+.post-item-active-body::first-letter {
     text-transform: capitalize;
 }
 
 .post-item-author {
     text-align: right;
     padding-right: 5px;
+    padding-top: 3px;
     font-size: 1.2rem;
     min-height: 2.6rem;
+    padding-bottom: 6px;
 }
 
 .post-item-author-username {
     cursor: pointer;
+    font-weight: 500;
 }
 
 .post-item-author-username:hover {
@@ -73,9 +114,43 @@
 
 .post-item-author-email {
     font-size: 0.9rem;
-    padding-right: 10px;
+    padding-right: 3px;
 }
 
 .post-item-author-loading {
     text-align: center;
+}
+
+.post-comments {
+    font-size: 1.3rem;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-comments-button {
+    align-self: end;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.first-letter::first-letter {
+    text-transform: capitalize;
+}
+
+.comment-title {
+    margin-top: 10px;
+    font-weight: 500;
+}
+
+.comment-email {
+    font-size: 0.9rem;
+    align-self: end;
+    font-style: italic;
+    padding-right: 8px;
+}
+
+.comment {
+    padding-left: 5px;
+    display: flex;
+    flex-direction: column;
 }

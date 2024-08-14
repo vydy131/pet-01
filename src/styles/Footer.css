@@ -2,7 +2,7 @@
     margin-top: 30px;
     padding-top: 60px;
     padding-bottom: 30px;
-    background: linear-gradient(to top, #000000, #ffffff);
+    background: linear-gradient(to top, #000000, rgba(0, 0, 0, 0));
     color: white;
     display: flex;
     justify-content: center;

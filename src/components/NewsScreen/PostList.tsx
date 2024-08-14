@@ -33,6 +33,12 @@ const PostList = observer(() => {
   }, [postStore, postStore.currentFilterValue]);
 
   useEffect(() => {
+    if (userStore.currentAuthLevel === AuthLevel.unauthorized) {
+      postStore.myPosts = [];
+    }
+  }, [userStore.currentAuthLevel]);
+
+  useEffect(() => {
     if (userStore.currentAuthLevel === AuthLevel.authorized) {
       if (!postStore.authorsDataMap[userStore.currentUser!.id]) {
         postStore.authorsDataMap[userStore.currentUser!.id] = {

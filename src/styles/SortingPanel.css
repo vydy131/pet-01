@@ -1,5 +1,7 @@
 .sort-panel {
-    margin: 10px 0px;
+    border: gray 1px solid;
+    margin: 10px 10px;
+    border-radius: 20px;
 }
 
 fieldset>label {
