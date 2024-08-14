@@ -8,6 +8,7 @@ export class PostStore {
   posts: IPost[] = [];
   myPosts: IPost[] = [];
   authorsDataMap: { [key: number]: { username: string; email: string } } = {};
+  imagesDataMap: { [key: number]: { title: string; url: string } } = {};
 
   currentSortingValue: string = "d-up";
   currentFilterValue: string = "all-posts";
@@ -45,6 +46,20 @@ export class PostStore {
     }
   }
 
+  private async queryImageById(
+    id: number
+  ): Promise<{ title: string; url: string }> {
+    if (this.imagesDataMap[id]) {
+      return this.imagesDataMap[id];
+    } else {
+      const incomingData = await this.getImageById(id);
+      runInAction(() => {
+        this.imagesDataMap[id] = incomingData;
+      });
+      return incomingData;
+    }
+  }
+
   private async getById(
     id: number,
     apiURL = "https://jsonplaceholder.typicode.com/users"
@@ -60,6 +75,27 @@ export class PostStore {
       console.error("Failed to load user name and email", error);
       // this author will be shown in case of error
       return { username: "some guy", email: "maybe girl" };
+    }
+  }
+
+  private async getImageById(
+    id: number,
+    apiURL = "https://jsonplaceholder.typicode.com/photos"
+  ): Promise<{ title: string; url: string }> {
+    try {
+      const incomingData = await axios.get(apiURL + `?id=${id}`);
+      return {
+        // because we get the array of objects (here length === 1)
+        title: incomingData.data[0].title,
+        url: incomingData.data[0].url,
+      };
+    } catch (error) {
+      console.error("Failed to load image", error);
+      // this author will be shown in case of error
+      return {
+        title: "_default_image_",
+        url: "https://play-lh.googleusercontent.com/6UgEjh8Xuts4nwdWzTnWH8QtLuHqRMUB7dp24JYVE2xcYzq4HA8hFfcAbU-R-PC_9uA1",
+      };
     }
   }
 
@@ -81,6 +117,7 @@ export class PostStore {
             this.hasMore = false;
           }
           this.loadAuthorsData(this.posts);
+          this.loadImagesData(this.posts);
           this.startPosition = this.posts.length;
         } else {
           this.myPosts = [...this.myPosts, ...incomingData.data];
@@ -88,6 +125,7 @@ export class PostStore {
             this.hasMoreMP = false;
           }
           this.loadAuthorsData(this.myPosts);
+          this.loadImagesData(this.myPosts);
           this.startPositionMP = this.myPosts.length;
         }
       });
@@ -114,6 +152,7 @@ export class PostStore {
             this.hasMore = false;
           }
           this.loadAuthorsData(this.posts);
+          this.loadImagesData(this.posts);
           this.startPosition = this.posts.length;
         } else {
           this.myPosts = [...this.myPosts, ...incomingData.data];
@@ -121,6 +160,7 @@ export class PostStore {
             this.hasMoreMP = false;
           }
           this.loadAuthorsData(this.myPosts);
+          this.loadImagesData(this.myPosts);
           this.startPositionMP = this.myPosts.length;
         }
       });
@@ -139,6 +179,24 @@ export class PostStore {
         });
       }
     }
+    runInAction(() => {
+      this.posts = [...this.posts];
+      this.myPosts = [...this.myPosts];
+    });
+  }
+
+  async loadImagesData(posts: IPost[]) {
+    // Image.id === Post.id
+    const uniqueImageIds = Array.from(new Set(posts.map((post) => post.id)));
+    for (const imageId of uniqueImageIds) {
+      if (!this.imagesDataMap[imageId]) {
+        const imageData = await this.queryImageById(imageId);
+        runInAction(() => {
+          this.imagesDataMap[imageId] = imageData;
+        });
+      }
+    }
+    // rerender post, 'cause sometimes data is loaded, but not showed
     runInAction(() => {
       this.posts = [...this.posts];
       this.myPosts = [...this.myPosts];

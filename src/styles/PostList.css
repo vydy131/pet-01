@@ -25,12 +25,15 @@
     overflow: hidden;
     height: 100%;
     width: 100%;
+
+
 }
 
 .post-image {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    max-height: 1000px;
 }
 
 .post-image-inactive {
@@ -40,6 +43,8 @@
 .post-image-inactive:hover {
     transform: scale(1.2);
 }
+
+.post-item-image-loading {}
 
 .active-item {
     width: 100%;
@@ -79,12 +84,12 @@
 
 .post-item-active-body {
     font-size: 1.4rem;
-    max-height: 3.5rem;
     margin-left: 2px;
 }
 
 .post-item-title::first-letter,
-.post-item-body::first-letter {
+.post-item-inactive-body::first-letter,
+.post-item-active-body::first-letter {
     text-transform: capitalize;
 }
 
