@@ -89,6 +89,39 @@ const PostItem: React.FC<IPostItem> = observer(({ post, typeOfList }) => {
       ) : (
         <address className="post-item-author-loading">Loading...</address>
       )}
+      {post.id === postStore.activeItemId && (
+        <div className="post-comments">
+          {!postStore.commentsDataMap[post.id]?.comments && (
+            <button
+              className="post-comments-button"
+              onClick={() => postStore.loadInitialComments(post.id)}
+            >
+              Show comments
+            </button>
+          )}
+
+          {Object.values(
+            postStore.commentsDataMap[post.id]?.comments || {}
+          ).map((comment) => (
+            <div key={comment.body} className="comment">
+              <div className="first-letter comment-title">{comment.title}</div>
+              <div className="first-letter">{comment.body}</div>
+              <a
+                href={`mailto:${comment.userEmail}`}
+                className="first-letter comment-email"
+              >
+                {comment.userEmail}
+              </a>
+            </div>
+          ))}
+
+          {postStore.commentsDataMap[post.id]?.canLoadMore && (
+            <button onClick={() => postStore.loadMoreComments(post.id)}>
+              More comments
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 });

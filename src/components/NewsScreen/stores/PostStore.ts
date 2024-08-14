@@ -9,6 +9,14 @@ export class PostStore {
   myPosts: IPost[] = [];
   authorsDataMap: { [key: number]: { username: string; email: string } } = {};
   imagesDataMap: { [key: number]: { title: string; url: string } } = {};
+  commentsDataMap: {
+    [key: number]: {
+      canLoadMore: boolean;
+      comments: {
+        [key: number]: { userEmail: string; title: string; body: string };
+      };
+    };
+  } = {};
 
   currentSortingValue: string = "d-up";
   currentFilterValue: string = "all-posts";
@@ -311,4 +319,85 @@ export class PostStore {
   handleItemClick = (id: number) => {
     this.activeItemId = id;
   };
+
+  async loadInitialComments(postId: number) {
+    try {
+      const quantity = 10; // количество комментариев для загрузки
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/comments?postId=${postId}&_start=0&_limit=${quantity}`
+      );
+
+      runInAction(() => {
+        this.commentsDataMap[postId] = {
+          canLoadMore: response.data.length === quantity,
+          comments: response.data.reduce(
+            (
+              acc: { [x: string]: { userEmail: any; title: any; body: any } },
+              comment: { id: string | number; email: any; name: any; body: any }
+            ) => {
+              acc[comment.id] = {
+                userEmail: comment.email,
+                title: comment.name,
+                body: comment.body,
+              };
+              return acc;
+            },
+            {} as {
+              [key: number]: { userEmail: string; title: string; body: string };
+            }
+          ),
+        };
+      });
+    } catch (error) {
+      console.error("Failed to load comments", error);
+    }
+  }
+
+  async loadMoreComments(postId: number) {
+    try {
+      const existingComments = this.commentsDataMap[postId]?.comments || {};
+      const offset = Object.keys(existingComments).length;
+      const quantity = 10; // количество комментариев для подгрузки
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/comments?postId=${postId}&_start=${offset}&_limit=${quantity}`
+      );
+
+      runInAction(() => {
+        if (this.commentsDataMap[postId]) {
+          this.commentsDataMap[postId].canLoadMore =
+            response.data.length === quantity;
+          this.commentsDataMap[postId].comments = {
+            ...this.commentsDataMap[postId].comments,
+            ...response.data.reduce(
+              (
+                acc: { [x: string]: { userEmail: any; title: any; body: any } },
+                comment: {
+                  id: string | number;
+                  email: any;
+                  name: any;
+                  body: any;
+                }
+              ) => {
+                acc[comment.id] = {
+                  userEmail: comment.email,
+                  title: comment.name,
+                  body: comment.body,
+                };
+                return acc;
+              },
+              {} as {
+                [key: number]: {
+                  userEmail: string;
+                  title: string;
+                  body: string;
+                };
+              }
+            ),
+          };
+        }
+      });
+    } catch (error) {
+      console.error("Failed to load more comments", error);
+    }
+  }
 }
